@@ -57,8 +57,6 @@ typedef struct
   i2c_fm_duty_cycle_t duty_cycle;
 } i2c_config_t;
 
-
-
 const i2c_config_t * i2c_config_table_get(void);
 
 #endif

@@ -5,61 +5,61 @@
 #define SM_RISE_TIME_MAX 1000
 #define FM_RISE_TIME_MAX 300
 
-volatile uint16_t *const I2C_CR1[NUM_I2C] =
+static volatile uint16_t *const I2C_CR1[NUM_I2C] =
 {
 	(uint16_t *)I2C1_BASE, (uint16_t *)I2C2_BASE, (uint16_t *)I2C3_BASE
 };
 
-volatile uint16_t *const I2C_CR2[NUM_I2C] =
+static volatile uint16_t *const I2C_CR2[NUM_I2C] =
 {
 	(uint16_t *)I2C1_BASE + 0x04UL, (uint16_t *)I2C2_BASE + 0x04UL,
 	(uint16_t *)I2C3_BASE + 0x04UL
 
 };
 
-volatile uint16_t *const I2C_OAR1[NUM_I2C] =
+static volatile uint16_t *const I2C_OAR1[NUM_I2C] =
 {
 	(uint16_t *)I2C1_BASE + 0x08UL, (uint16_t *)I2C2_BASE + 0x08UL,
 	(uint16_t *)I2C3_BASE + 0x08UL
 };
 
-volatile uint16_t *const I2C_OAR2[NUM_I2C] =
+static volatile uint16_t *const I2C_OAR2[NUM_I2C] =
 {
 	(uint16_t *)I2C1_BASE + 0x0CUL, (uint16_t *)I2C2_BASE + 0x0CUL,
 	(uint16_t *)I2C3_BASE + 0x0CUL
 };
 
-volatile uint16_t *const I2C_DR[NUM_I2C] =
+static volatile uint16_t *const I2C_DR[NUM_I2C] =
 {
 	(uint16_t *)I2C1_BASE + 0x10UL, (uint16_t *)I2C2_BASE + 0x10UL,
 	(uint16_t *)I2C3_BASE + 0x10UL
 };
 
-volatile uint16_t *const I2C_SR1[NUM_I2C] =
+static volatile uint16_t *const I2C_SR1[NUM_I2C] =
 {
 	(uint16_t *)I2C1_BASE + 0x14UL, (uint16_t *)I2C2_BASE + 0x14UL,
 	(uint16_t *)I2C3_BASE + 0x14UL
 };
 
-volatile uint16_t *const I2C_SR2[NUM_I2C] =
+static volatile uint16_t *const I2C_SR2[NUM_I2C] =
 {
 	(uint16_t *)I2C1_BASE + 0x18UL, (uint16_t *)I2C2_BASE + 0x18UL,
 	(uint16_t *)I2C3_BASE + 0x18UL
 };
 
-volatile uint16_t *const I2C_CCR[NUM_I2C] =
+static volatile uint16_t *const I2C_CCR[NUM_I2C] =
 {
 	(uint16_t *)I2C1_BASE + 0x1CUL, (uint16_t *)I2C2_BASE + 0x1CUL,
 	(uint16_t *)I2C3_BASE + 0x1CUL
 };
 
-volatile uint16_t *const I2C_TRISE[NUM_I2C] =
+static volatile uint16_t *const I2C_TRISE[NUM_I2C] =
 {
 	(uint16_t *)I2C1_BASE + 0x20UL, (uint16_t *)I2C2_BASE + 0x20UL,
 	(uint16_t *)I2C3_BASE + 0x20UL
 };
 
-volatile uint16_t *const I2C_FLTR[NUM_I2C] =
+static volatile uint16_t *const I2C_FLTR[NUM_I2C] =
 {
 	(uint16_t *)I2C1_BASE + 0x24UL, (uint16_t *)I2C2_BASE + 0x24UL,
 	(uint16_t *)I2C3_BASE + 0x24UL
@@ -109,6 +109,7 @@ uint32_t i2c_calculate_ccr(i2c_config_t *config_entry)
 	else if (config_entry->fast_or_std == I2C_FM)
 	{
 		assert(config_entry->i2c_op_freq_kHz <= 400);
+		assert(config_entry->periph_clk_freq_MHz > 0x03);
 		if (config_entry->duty_cycle == FM_MODE_2)
 		{
 		calculated_ccr = (config_entry->periph_clk_freq_MHz)/(3000UL*config_entry->i2c_op_freq_kHz);
@@ -140,5 +141,59 @@ uint32_t i2c_calculate_trise(i2c_config_t *config_entry)
 	return (calculated_trise);
 }
 
+void i2c_master_transmit(i2c_transfer_t *i2c_transfer)
+{
+	uint16_t status_reg = 0;
+	//1. Generate START condition
+	*I2C_CR1[i2c_transfer->channel] |= (I2C_CR1_START_Msk);
+	//2. Read SR1
+	status_reg = *I2C_SR1[i2c_transfer->channel];
+	//3. Write Slave Address into DR
+	*I2C_DR[i2c_transfer->channel] = i2c_transfer->slave_address;
+	//4. Read SR1
+	status_reg = *I2C_SR1[i2c_transfer->channel];
+	//5. Read SR2
+	status_reg = *I2C_SR2[i2c_transfer->channel];
 
+	//loop
+	while(i2c_transfer->data_length > 0)
+	{
+	//6. Write data byte into DR
+		*I2C_DR[i2c_transfer->channel] = *(i2c_transfer->buffer);
+		i2c_transfer->buffer++;
+		i2c_transfer->data_length--;
+	//7. Wait for TxE
+		status_reg = *I2C_SR1[i2c_transfer->channel];
+		while ((status_reg & I2C_SR1_TXE_Msk) == 0);
+	}
+	//goto loop
+	//8. Send STOP condition
+	*I2C_CR1[i2c_transfer->channel] |= (I2C_CR1_STOP_Msk);
 
+}
+
+void i2c_master_receive(i2c_transfer_t *i2c_transfer)
+{
+	uint16_t status_reg = 0;
+		//1. Generate START condition
+		*I2C_CR1[i2c_transfer->channel] |= (I2C_CR1_START_Msk);
+		//2. Read SR1
+		status_reg = *I2C_SR1[i2c_transfer->channel];
+		//3. Write Slave Address +1 into DR
+		*I2C_DR[i2c_transfer->channel] = i2c_transfer->slave_address | (0x01);
+		//4. Read SR1
+		status_reg = *I2C_SR1[i2c_transfer->channel];
+		//5. Read SR2
+		status_reg = *I2C_SR2[i2c_transfer->channel];
+
+		while(i2c_transfer->data_length > 0)
+		{
+			status_reg = *I2C_SR1[i2c_transfer->channel];
+			while((status_reg & I2C_SR1_RXNE_Msk) == 0);
+			*(i2c_transfer->buffer) = *I2C_DR[i2c_transfer->channel];
+			i2c_transfer->buffer++;
+			i2c_transfer->data_length--;
+		}
+
+		*I2C_CR1[i2c_transfer->channel] |= (I2C_CR1_STOP_Msk);
+}
