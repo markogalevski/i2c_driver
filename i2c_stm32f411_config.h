@@ -47,12 +47,13 @@ typedef struct
 {
   i2c_enabled_t en;
   i2c_ack_en_t slave_ack_en;
-  uint32_t periph_clk_freq;
+  uint32_t periph_clk_freq_MHz;
+  uint32_t i2c_op_freq_kHz;
   i2c_dma_en_t dma_en;
   i2c_it_err_en_t it_err_en;
   i2c_it_buf_en_t it_buf_en;
   i2c_it_evt_en_t it_evt_en;
-  i2c_fast_slow_t fast_or_slow;
+  i2c_fast_slow_t fast_or_std;
   i2c_fm_duty_cycle_t duty_cycle;
 } i2c_config_t;
 
