@@ -14,13 +14,6 @@
 typedef uint32_t i2c_enabled_t;
 
 typedef uint32_t i2c_ack_en_t;
-typedef enum
-{
-	I2C1 = 0x00UL,
-	I2C2 = 0x01UL,
-	I2C3 = 0x02UL,
-	NUM_I2C
-}i2c_channel_t;
 
 typedef uint32_t i2c_dma_en_t;
 
@@ -29,6 +22,14 @@ typedef uint32_t i2c_it_err_en_t;
 typedef uint32_t i2c_it_buf_en_t;
 
 typedef uint32_t i2c_it_evt_en_t;
+
+typedef enum
+{
+	I2C_1 = 0x00UL,
+	I2C_2 = 0x01UL,
+	I2C_3 = 0x02UL,
+	NUM_I2C
+} i2c_channel_t;
 
 
 typedef enum

@@ -1,6 +1,6 @@
-#include <i2c_stm32f411_config.h>
+#include "i2c_stm32f411_config.h"
 
-static const i2c_config_t i2c_config_table[] =
+static const i2c_config_t i2c_config_table[NUM_I2C] =
 {	//ENABLED		//SLAVE					//PERIPH			//DMA EN		//ERR Interrupt		//BUF Interrupt		//EVT Interrupt
 					//ACKNOWLEDGE			//CLOCK FREQ
 		{},

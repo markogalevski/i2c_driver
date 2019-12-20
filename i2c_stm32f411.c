@@ -1,4 +1,4 @@
-#include <i2c_interface.h>
+#include "i2c_interface.h"
 #include "stm32f411xe.h"
 #include <assert.h>
 
@@ -65,6 +65,11 @@ static volatile uint16_t *const I2C_FLTR[NUM_I2C] =
 	(uint16_t *)I2C1_BASE + 0x24UL, (uint16_t *)I2C2_BASE + 0x24UL,
 	(uint16_t *)I2C3_BASE + 0x24UL
 };
+
+
+static i2c_transfer_t interrupt_transfers[NUM_I2C];
+typedef void (*i2c_interrupt_callback_t)(i2c_transfer_t *);
+static i2c_interrupt_callback_t i2c_interrupt_callbacks[NUM_I2C];
 
 static uint32_t i2c_calculate_ccr(i2c_config_t *config_entry);
 static uint32_t i2c_calculate_trise(i2c_config_t *config_entry);
@@ -159,10 +164,7 @@ void i2c_master_transmit(i2c_transfer_t *i2c_transfer)
 	*I2C_CR1[i2c_transfer->channel] &= ~I2C_CR1_POS_Msk;
 	//3. Write Slave Address into DR
 	*I2C_DR[i2c_transfer->channel] = i2c_transfer->slave_address;
-	//4. Read SR1
-	status_reg = *I2C_SR1[i2c_transfer->channel];
-	//5. Read SR2
-	status_reg = *I2C_SR2[i2c_transfer->channel];
+	i2c_clear_addr_bit(i2c_transfer->channel);
 
 	//loop
 	while(i2c_transfer->data_length > 0)
@@ -240,8 +242,6 @@ void i2c_master_receive(i2c_transfer_t *i2c_transfer)
 void i2c_slave_transmit(i2c_transfer_t *i2c_transfer)
 {
   uint32_t status_reg;
-  uint32_t af_flag = 0;
-  uint32_t txe_flag = 1;
   assert(i2c_transfer->buffer != 0);
   *I2C_CR1[i2c_transfer->channel] |= I2C_CR1_ACK_Msk;
   do
@@ -277,7 +277,6 @@ void i2c_slave_transmit(i2c_transfer_t *i2c_transfer)
 void i2c_slave_receive(i2c_transfer_t *i2c_transfer)
 {
 	uint32_t status_reg;
-	uint32_t stopf_flag = 0;
 	assert(i2c_transfer->buffer != 0);
 	*I2C_CR1[i2c_transfer->channel] |= I2C_CR1_ACK_Msk;
 	*I2C_CR1[i2c_transfer->channel] &= ~I2C_CR1_POS_Msk;
@@ -313,7 +312,150 @@ void i2c_slave_receive(i2c_transfer_t *i2c_transfer)
 	*I2C_CR1[i2c_transfer->channel] &= ~I2C_CR1_ACK_Msk;
 }
 
+void i2c_master_transmit_it(i2c_transfer_t *i2c_transfer)
+{
 
+}
+
+void i2c_master_receive_it(i2c_transfer_t *i2c_transfer)
+{
+
+}
+
+void i2c_slave_transmit_it(i2c_transfer_t *i2c_transfer)
+{
+
+}
+
+void i2c_slave_receive_it(i2c_transfer_t *i2c_transfer)
+{
+
+}
+
+static void i2c_master_transmit_it_callback(i2c_transfer_t *i2c_transfer)
+{
+	uint32_t status_reg = *I2C_SR1[i2c_transfer->channel];
+	if (status_reg & I2C_SR1_ADDR_Msk)
+		i2c_clear_addr_bit(i2c_transfer->channel);
+	else if ((status_reg & I2C_SR1_TXE_Msk) && i2c_transfer->data_length > 0)
+	{
+		*I2C_DR[i2c_transfer->channel] = *i2c_transfer->buffer;
+		i2c_transfer->buffer++;
+		i2c_transfer->data_length--;
+		status_reg = *I2C_SR1[i2c_transfer->channel];
+	}
+	if ((status_reg & I2C_SR1_BTF_Msk) && i2c_transfer->data_length > 0)
+	{
+		*I2C_DR[i2c_transfer->channel] = *i2c_transfer->buffer;
+		i2c_transfer->buffer++;
+		i2c_transfer->data_length--;
+	}
+
+	if (i2c_transfer->data_length == 0)
+	{
+		*I2C_CR2[i2c_transfer->channel] &= ~(I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
+		*I2C_CR1[i2c_transfer->channel] |= I2C_CR1_STOP_Msk;
+	}
+}
+
+static void i2c_master_receive_it_callback(i2c_transfer_t *i2c_transfer)
+{
+	uint32_t status_reg = I2C_SR1[i2c_transfer->channel];
+	if (status_reg & I2C_SR1_ADDR_Msk)
+	{
+		i2c_clear_addr_bit(i2c_transfer->channel);
+	}
+	else if (status_reg && I2C_SR1_RXNE_Msk && i2c_transfer->data_length > 3)
+	{
+		*i2c_transfer->buffer = (uint8_t) *I2C_DR[i2c_transfer->channel];
+		i2c_transfer->buffer++;
+		i2c_transfer->data_length--;
+	}
+	else if ((status_reg & I2C_SR1_BTF_Msk) && i2c_transfer->data_length > 3)
+	{
+		*i2c_transfer->buffer = (uint8_t) *I2C_DR[i2c_transfer->channel];
+		i2c_transfer->buffer++;
+		i2c_transfer->data_length--;
+	}
+	else if (i2c_transfer->data_length == 3)
+	{
+		*I2C_CR2[i2c_transfer->channel] &= ~(I2C_CR2_ITBUFEN_Msk | I2C_CR2_ITEVTEN_Msk);
+		do
+		{
+			status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_BTF_Msk;
+		} while(status_reg == 0);
+
+		*I2C_CR1[i2c_transfer->channel] &= ~I2C_CR1_ACK_Msk;
+		*i2c_transfer->buffer = *I2C_DR[i2c_transfer->channel];
+		i2c_transfer->buffer++;
+		i2c_transfer->data_length--;
+
+		do
+		{
+		 status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_BTF_Msk;
+		} while(status_reg ==  0);
+		*I2C_CR1[i2c_transfer->channel] |= I2C_CR1_STOP_Msk;
+		*i2c_transfer->buffer = *I2C_DR[i2c_transfer->channel];
+		i2c_transfer->buffer++;
+		i2c_transfer->data_length--;
+		*i2c_transfer->buffer = *I2C_DR[i2c_transfer->channel];
+		i2c_transfer->buffer++;
+		i2c_transfer->data_length--;
+	}
+}
+
+static void i2c_slave_transmit_it_callback(i2c_transfer_t *i2c_transfer)
+{
+	uint32_t status_reg = *I2C_SR1[i2c_transfer->channel];
+	if (status_reg & I2C_SR1_ADDR_Msk)
+	{
+		i2c_clear_addr_bit(i2c_transfer->channel);
+	}
+	else if ((status_reg & I2C_SR1_TXE_Msk) && i2c_transfer->data_length > 0)
+	{
+		*I2C_DR[i2c_transfer->channel] = *i2c_transfer->buffer;
+		i2c_transfer->buffer++;
+		i2c_transfer->data_length--;
+	}
+	else if ((status_reg & I2C_SR1_BTF_Msk) && i2c_transfer->data_length < 0)
+	{
+		*I2C_DR[i2c_transfer->channel] = *i2c_transfer->buffer;
+		i2c_transfer->buffer++;
+		i2c_transfer->data_length--;
+	}
+	if (i2c_transfer->data_length == 0)
+	{
+		*I2C_CR2[i2c_transfer->channel] &= ~(I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
+		*I2C_SR1[i2c_transfer->channel] &= ~I2C_SR1_AF_Msk;
+		*I2C_CR1[i2c_transfer->channel] &= ~I2C_CR1_ACK_Msk;
+	}
+}
+
+static void i2c_slave_receive_it_callback(i2c_transfer_t *i2c_transfer)
+{
+  uint32_t status_reg = *I2C_SR1[i2c_transfer->channel];
+  if (status_reg & I2C_SR1_ADDR_Msk)
+  {
+	  i2c_clear_addr_bit(i2c_transfer->channel);
+  }
+  else if ((status_reg & I2C_SR1_RXNE_Msk) && i2c_transfer->data_length > 0)
+  {
+	  *i2c_transfer->buffer = (uint8_t) *I2C_DR[i2c_transfer->channel];
+	  i2c_transfer->buffer++;
+	  i2c_transfer->data_length--;
+  }
+  else if ((status_reg & I2C_SR1_BTF_Msk) && i2c_transfer->data_length > 0)
+  {
+	  *i2c_transfer->buffer = (uint8_t) *I2C_DR[i2c_transfer->channel];
+	  i2c_transfer->buffer++;
+	  i2c_transfer->data_length--;
+  }
+  else if (status_reg & I2C_SR1_STOPF_Msk)
+  {
+	  i2c_clear_stopf_bit(i2c_transfer->channel);
+	  *I2C_CR1[i2c_transfer->channel] &= ~I2C_CR1_ACK_Msk;
+  }
+}
 
 static void i2c_clear_addr_bit(i2c_channel_t channel)
 {
@@ -404,3 +546,14 @@ static void i2c_n_byte_reception(i2c_transfer_t *i2c_transfer)
   	i2c_transfer->buffer++;
   	i2c_transfer->data_length--;
 }
+
+void i2c_ev_irq_handler(i2c_channel_t channel)
+{
+	i2c_transfer_t *transfer = &interrupt_transfers[channel];
+	if (i2c_interrupt_callbacks[channel] != 0)
+	  i2c_interrupt_callbacks[channel](transfer);
+
+}
+
+
+
