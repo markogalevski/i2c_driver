@@ -176,7 +176,7 @@ void i2c_master_transmit(i2c_transfer_t *i2c_transfer)
 		*I2C_DR[i2c_transfer->channel] = *(i2c_transfer->buffer);
 		i2c_transfer->buffer++;
 		i2c_transfer->data_length--;
-		status_reg = I2C_SR1[i2c_transfer->channel] & I2C_SR1_BTF_Msk;
+		status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_BTF_Msk;
 		if (status_reg != 0 && i2c_transfer->data_length != 0)
 		{
 			*I2C_DR[i2c_transfer->channel] = *(i2c_transfer->buffer);
@@ -215,7 +215,7 @@ void i2c_master_receive(i2c_transfer_t *i2c_transfer)
 	 */
 	do
 	{
-		status_reg = I2C_SR1[i2c_transfer->channel] & I2C_SR1_ADDR_Msk;
+		status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_ADDR_Msk;
 	} while (status_reg == 0);
 
 	if (i2c_transfer->data_length == 0UL)
@@ -373,7 +373,7 @@ static void i2c_n_byte_reception(i2c_transfer_t *i2c_transfer)
 	  *i2c_transfer->buffer = *I2C_DR[i2c_transfer->channel];
   	  i2c_transfer->buffer++;
   	  i2c_transfer->data_length--;
-  	  status_reg = I2C_SR1[i2c_transfer->channel] & I2C_SR1_BTF_Msk;
+  	  status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_BTF_Msk;
   	  if (status_reg &&  i2c_transfer->data_length > 3)
   	  {
   		  *i2c_transfer->buffer = *I2C_DR[i2c_transfer->channel];
