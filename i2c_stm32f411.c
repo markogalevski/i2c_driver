@@ -312,25 +312,6 @@ void i2c_slave_receive(i2c_transfer_t *i2c_transfer)
 	*I2C_CR1[i2c_transfer->channel] &= ~I2C_CR1_ACK_Msk;
 }
 
-void i2c_master_transmit_it(i2c_transfer_t *i2c_transfer)
-{
-
-}
-
-void i2c_master_receive_it(i2c_transfer_t *i2c_transfer)
-{
-
-}
-
-void i2c_slave_transmit_it(i2c_transfer_t *i2c_transfer)
-{
-
-}
-
-void i2c_slave_receive_it(i2c_transfer_t *i2c_transfer)
-{
-
-}
 
 static void i2c_master_transmit_it_callback(i2c_transfer_t *i2c_transfer)
 {
@@ -360,7 +341,7 @@ static void i2c_master_transmit_it_callback(i2c_transfer_t *i2c_transfer)
 
 static void i2c_master_receive_it_callback(i2c_transfer_t *i2c_transfer)
 {
-	uint32_t status_reg = I2C_SR1[i2c_transfer->channel];
+	uint32_t status_reg = *I2C_SR1[i2c_transfer->channel];
 	if (status_reg & I2C_SR1_ADDR_Msk)
 	{
 		i2c_clear_addr_bit(i2c_transfer->channel);
@@ -401,6 +382,7 @@ static void i2c_master_receive_it_callback(i2c_transfer_t *i2c_transfer)
 		*i2c_transfer->buffer = *I2C_DR[i2c_transfer->channel];
 		i2c_transfer->buffer++;
 		i2c_transfer->data_length--;
+		*I2C_CR2[i2c_transfer->channel] &= ~(I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
 	}
 }
 
@@ -452,20 +434,57 @@ static void i2c_slave_receive_it_callback(i2c_transfer_t *i2c_transfer)
   }
   else if (status_reg & I2C_SR1_STOPF_Msk)
   {
+	  *I2C_CR2[i2c_transfer->channel] &= ~(I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
 	  i2c_clear_stopf_bit(i2c_transfer->channel);
 	  *I2C_CR1[i2c_transfer->channel] &= ~I2C_CR1_ACK_Msk;
   }
 }
 
+
+
+void i2c_master_transmit_it(i2c_transfer_t *i2c_transfer)
+{
+	interrupt_transfers[i2c_transfer->channel] = *i2c_transfer;
+	i2c_interrupt_callbacks[i2c_transfer->channel] = i2c_master_transmit_it_callback;
+	*I2C_CR2[i2c_transfer->channel] |= (I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
+	*I2C_CR1[i2c_transfer->channel] |= I2C_CR1_START_Msk;
+	volatile uint32_t status_reg = *I2C_SR1[i2c_transfer->channel];
+	*I2C_DR[i2c_transfer->channel] = i2c_transfer->slave_address;
+}
+
+void i2c_master_receive_it(i2c_transfer_t *i2c_transfer)
+{
+	interrupt_transfers[i2c_transfer->channel] = *i2c_transfer;
+	i2c_interrupt_callbacks[i2c_transfer->channel] = i2c_master_receive_it_callback;
+	*I2C_CR2[i2c_transfer->channel] |= (I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
+	*I2C_CR1[i2c_transfer->channel] |= I2C_CR1_START_Msk;
+	volatile uint32_t status_reg = *I2C_SR1[i2c_transfer->channel];
+	*I2C_DR[i2c_transfer->channel] = i2c_transfer->slave_address | 0x01;
+}
+
+void i2c_slave_transmit_it(i2c_transfer_t *i2c_transfer)
+{
+	interrupt_transfers[i2c_transfer->channel] = *i2c_transfer;
+	i2c_interrupt_callbacks[i2c_transfer->channel] = i2c_slave_transmit_it_callback;
+	*I2C_CR2[i2c_transfer->channel] |= (I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
+}
+
+void i2c_slave_receive_it(i2c_transfer_t *i2c_transfer)
+{
+	interrupt_transfers[i2c_transfer->channel] = *i2c_transfer;
+	i2c_interrupt_callbacks[i2c_transfer->channel] = i2c_slave_receive_it_callback;
+	*I2C_CR2[i2c_transfer->channel] |= (I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
+}
+
 static void i2c_clear_addr_bit(i2c_channel_t channel)
 {
-	uint32_t status_reg = *I2C_SR1[channel];
+	volatile uint32_t status_reg = *I2C_SR1[channel];
 	status_reg = *I2C_SR2[channel];
 }
 
 static void i2c_clear_stopf_bit(i2c_channel_t channel)
 {
-	uint32_t status_reg = *I2C_SR1[channel];
+	volatile uint32_t status_reg = *I2C_SR1[channel];
 	*I2C_CR1[channel] |= I2C_CR1_STOP_Msk;
 }
 

@@ -7,7 +7,7 @@
 typedef struct
 {
   i2c_channel_t channel;
-  uint8_t * buffer;
+  uint8_t *buffer;
   uint32_t data_length;
   uint8_t slave_address;
 } i2c_transfer_t;
