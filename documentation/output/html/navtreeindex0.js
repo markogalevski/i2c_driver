@@ -1,0 +1,27 @@
+var NAVTREEINDEX0 =
+{
+"annotated.html":[0,0],
+"classes.html":[0,1],
+"files.html":[1,0],
+"i2c__interface_8h_source.html":[1,0,0],
+"i2c__stm32f411__config_8h_source.html":[1,0,1],
+"index.html":[],
+"pages.html":[],
+"structi2c__config__t.html":[0,0,0],
+"structi2c__config__t.html#a1ba789e2bc94aff2b0f4236c08dc3450":[0,0,0,3],
+"structi2c__config__t.html#a1e9ff2ff5e58bb6971b01c25a2d09486":[0,0,0,2],
+"structi2c__config__t.html#a72c0fc4a22be976c2d7f84197dabb775":[0,0,0,0],
+"structi2c__config__t.html#a8fdee882c865bf33452cbb7b171c830b":[0,0,0,6],
+"structi2c__config__t.html#aa332238eedbb66d8547387f7288ae287":[0,0,0,4],
+"structi2c__config__t.html#ab8f66abc732f78bd9d2bf71a3c621282":[0,0,0,1],
+"structi2c__config__t.html#ab9a62964300ea7d5f31507747140a3ba":[0,0,0,8],
+"structi2c__config__t.html#abef7216a38b12ef9b858792dce7b3fba":[0,0,0,9],
+"structi2c__config__t.html#abfadcfb41a723c11f72f5743f445be0b":[0,0,0,7],
+"structi2c__config__t.html#ad9ff8b17bb1895945abd52c382812ef6":[0,0,0,5],
+"structi2c__transfer__t.html":[0,0,1],
+"structi2c__transfer__t.html#a56ed84df35de10bdb65e72b184309497":[0,0,1,0],
+"structi2c__transfer__t.html#ac93868aeda435dfb685a0a0020e5c7a4":[0,0,1,3],
+"structi2c__transfer__t.html#add3e500ab7f1fe4dcf53e83a5a908679":[0,0,1,1],
+"structi2c__transfer__t.html#af0cc3d1d5957cce931bb8e02130c6550":[0,0,1,2],
+"util_8h_source.html":[1,0,2]
+};

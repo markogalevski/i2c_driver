@@ -18,7 +18,11 @@ void i2c_master_transmit(i2c_transfer_t *);
 void i2c_master_receive(i2c_transfer_t *);
 void i2c_slave_transmit(i2c_transfer_t *);
 void i2c_slave_receive(i2c_transfer_t *);
-void i2c_ev_irq_handler(i2c_channel_t channel);
+void i2c_master_transmit_it(i2c_transfer_t *);
+void i2c_master_receive_it(i2c_transfer_t *);
+void i2c_slave_transmit_it(i2c_transfer_t *);
+void i2c_slave_receive_it(i2c_transfer_t *);
+void i2c_irq_handler(i2c_channel_t channel);
 
 void i2c_register_write(uint32_t i2c_register);
 uint32_t i2c_register_read(uint32_t i2c_regsister);

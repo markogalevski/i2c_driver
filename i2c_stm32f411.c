@@ -67,7 +67,7 @@ static volatile uint16_t *const I2C_FLTR[NUM_I2C] =
 };
 
 
-static i2c_transfer_t interrupt_transfers[NUM_I2C];
+static i2c_transfer_t i2c_interrupt_transfers[NUM_I2C];
 typedef void (*i2c_interrupt_callback_t)(i2c_transfer_t *);
 static i2c_interrupt_callback_t i2c_interrupt_callbacks[NUM_I2C];
 
@@ -444,7 +444,7 @@ static void i2c_slave_receive_it_callback(i2c_transfer_t *i2c_transfer)
 
 void i2c_master_transmit_it(i2c_transfer_t *i2c_transfer)
 {
-	interrupt_transfers[i2c_transfer->channel] = *i2c_transfer;
+	i2c_interrupt_transfers[i2c_transfer->channel] = *i2c_transfer;
 	i2c_interrupt_callbacks[i2c_transfer->channel] = i2c_master_transmit_it_callback;
 	*I2C_CR2[i2c_transfer->channel] |= (I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
 	*I2C_CR1[i2c_transfer->channel] |= I2C_CR1_START_Msk;
@@ -454,7 +454,7 @@ void i2c_master_transmit_it(i2c_transfer_t *i2c_transfer)
 
 void i2c_master_receive_it(i2c_transfer_t *i2c_transfer)
 {
-	interrupt_transfers[i2c_transfer->channel] = *i2c_transfer;
+	i2c_interrupt_transfers[i2c_transfer->channel] = *i2c_transfer;
 	i2c_interrupt_callbacks[i2c_transfer->channel] = i2c_master_receive_it_callback;
 	*I2C_CR2[i2c_transfer->channel] |= (I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
 	*I2C_CR1[i2c_transfer->channel] |= I2C_CR1_START_Msk;
@@ -464,14 +464,14 @@ void i2c_master_receive_it(i2c_transfer_t *i2c_transfer)
 
 void i2c_slave_transmit_it(i2c_transfer_t *i2c_transfer)
 {
-	interrupt_transfers[i2c_transfer->channel] = *i2c_transfer;
+	i2c_interrupt_transfers[i2c_transfer->channel] = *i2c_transfer;
 	i2c_interrupt_callbacks[i2c_transfer->channel] = i2c_slave_transmit_it_callback;
 	*I2C_CR2[i2c_transfer->channel] |= (I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
 }
 
 void i2c_slave_receive_it(i2c_transfer_t *i2c_transfer)
 {
-	interrupt_transfers[i2c_transfer->channel] = *i2c_transfer;
+	i2c_interrupt_transfers[i2c_transfer->channel] = *i2c_transfer;
 	i2c_interrupt_callbacks[i2c_transfer->channel] = i2c_slave_receive_it_callback;
 	*I2C_CR2[i2c_transfer->channel] |= (I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
 }
@@ -566,9 +566,9 @@ static void i2c_n_byte_reception(i2c_transfer_t *i2c_transfer)
   	i2c_transfer->data_length--;
 }
 
-void i2c_ev_irq_handler(i2c_channel_t channel)
+void i2c_irq_handler(i2c_channel_t channel)
 {
-	i2c_transfer_t *transfer = &interrupt_transfers[channel];
+	i2c_transfer_t *transfer = &i2c_interrupt_transfers[channel];
 	if (i2c_interrupt_callbacks[channel] != 0)
 	  i2c_interrupt_callbacks[channel](transfer);
 

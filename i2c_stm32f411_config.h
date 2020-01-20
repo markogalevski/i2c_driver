@@ -1,5 +1,5 @@
-#ifndef _I2C_STM32F4XX_CFG
-#define _I2C_STM32F4XX_CFG
+#ifndef _I2C_STM32F411_CFG
+#define _I2C_STM32F411_CFG
 
 #include <stdint.h>
 
@@ -58,6 +58,6 @@ typedef struct
   i2c_fm_duty_cycle_t duty_cycle;
 } i2c_config_t;
 
-const i2c_config_t * i2c_config_table_get(void);
+const i2c_config_t *i2c_config_table_get(void);
 
 #endif
