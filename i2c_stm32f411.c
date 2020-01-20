@@ -1,16 +1,56 @@
+/*******************************************************************************
+* Title                 :   I2C Implementation for STM32F411
+* Filename              :   i2c_stm32f411.c
+* Author                :   Marko Galevski
+* Origin Date           :   20/01/2020
+* Version               :   1.0.0
+* Compiler              :   GCC
+* Target                :   STM32F411 (Arm Cortex M4)
+* Notes                 :   None
+*
+*
+*******************************************************************************/
+/****************************************************************************
+* Doxygen C Template
+* Copyright (c) 2013 - Jacob Beningo - All Rights Reserved
+*
+* Feel free to use this Doxygen Code Template at your own risk for your own
+* purposes.  The latest license and updates for this Doxygen C template can be
+* found at www.beningo.com or by contacting Jacob at jacob@beningo.com.
+*
+* For updates, free software, training and to stay up to date on the latest
+* embedded software techniques sign-up for Jacobs newsletter at
+* http://www.beningo.com/814-2/
+*
+* The above copyright notice and this permission notice shall be included in
+* all copies or substantial portions of the Template.
+*
+*****************************************************************************/
+
+/** @file i2c_stm32f411.c
+ *  @brief Chip specific implementation for i2c communication.
+ */
 #include "i2c_interface.h"
 #include "stm32f411xe.h"
 #include <assert.h>
 
+/**
+ * Rise times obtained from the phillips i2c spec sheet
+ */
+#define SM_RISE_TIME_MAX 1000 /**<Maximum rise time for a stanard mode pulse in ns.*/
+#define FM_RISE_TIME_MAX 300 /**<Maximum rise time for a fast mode pulse in ns.  */
 
-#define SM_RISE_TIME_MAX 1000
-#define FM_RISE_TIME_MAX 300
-
+/**
+ * Array of pointers to the Control Register 1 registers
+ */
 static volatile uint16_t *const I2C_CR1[NUM_I2C] =
 {
 	(uint16_t *)I2C1_BASE, (uint16_t *)I2C2_BASE, (uint16_t *)I2C3_BASE
 };
 
+/**
+ * Array of pointers to the Control Register 2 registers
+ */
 static volatile uint16_t *const I2C_CR2[NUM_I2C] =
 {
 	(uint16_t *)I2C1_BASE + 0x04UL, (uint16_t *)I2C2_BASE + 0x04UL,
@@ -18,57 +58,91 @@ static volatile uint16_t *const I2C_CR2[NUM_I2C] =
 
 };
 
+/**
+ * Array of pointers to the Own Address 1 registers
+ */
 static volatile uint16_t *const I2C_OAR1[NUM_I2C] =
 {
 	(uint16_t *)I2C1_BASE + 0x08UL, (uint16_t *)I2C2_BASE + 0x08UL,
 	(uint16_t *)I2C3_BASE + 0x08UL
 };
 
+/**
+ * Array of pointers to the Own Address 2 registers
+ */
 static volatile uint16_t *const I2C_OAR2[NUM_I2C] =
 {
 	(uint16_t *)I2C1_BASE + 0x0CUL, (uint16_t *)I2C2_BASE + 0x0CUL,
 	(uint16_t *)I2C3_BASE + 0x0CUL
 };
 
+/**
+ * Array of pointers to the Data registers
+ */
 static volatile uint16_t *const I2C_DR[NUM_I2C] =
 {
 	(uint16_t *)I2C1_BASE + 0x10UL, (uint16_t *)I2C2_BASE + 0x10UL,
 	(uint16_t *)I2C3_BASE + 0x10UL
 };
 
+/**
+ * Array of pointers to the Status Register 1 registers
+ */
 static volatile uint16_t *const I2C_SR1[NUM_I2C] =
 {
 	(uint16_t *)I2C1_BASE + 0x14UL, (uint16_t *)I2C2_BASE + 0x14UL,
 	(uint16_t *)I2C3_BASE + 0x14UL
 };
 
+/**
+ * Array of pointers to the Status Register 2 registers
+ */
 static volatile uint16_t *const I2C_SR2[NUM_I2C] =
 {
 	(uint16_t *)I2C1_BASE + 0x18UL, (uint16_t *)I2C2_BASE + 0x18UL,
 	(uint16_t *)I2C3_BASE + 0x18UL
 };
 
+/**
+ * Array of pointers to the clock control registers
+ */
 static volatile uint16_t *const I2C_CCR[NUM_I2C] =
 {
 	(uint16_t *)I2C1_BASE + 0x1CUL, (uint16_t *)I2C2_BASE + 0x1CUL,
 	(uint16_t *)I2C3_BASE + 0x1CUL
 };
 
+/**
+ * Array of pointers to the rise time registers
+ */
 static volatile uint16_t *const I2C_TRISE[NUM_I2C] =
 {
 	(uint16_t *)I2C1_BASE + 0x20UL, (uint16_t *)I2C2_BASE + 0x20UL,
 	(uint16_t *)I2C3_BASE + 0x20UL
 };
 
+/**
+ * Array of pointers to the filter registers
+ */
 static volatile uint16_t *const I2C_FLTR[NUM_I2C] =
 {
 	(uint16_t *)I2C1_BASE + 0x24UL, (uint16_t *)I2C2_BASE + 0x24UL,
 	(uint16_t *)I2C3_BASE + 0x24UL
 };
 
-
+/**
+ * Static array which holds copies of requested interrupt based transfers
+ */
 static i2c_transfer_t i2c_interrupt_transfers[NUM_I2C];
+
+/**
+ * Callback typedef for interrupt callbacks
+ */
 typedef void (*i2c_interrupt_callback_t)(i2c_transfer_t *);
+/**
+ * Static array containing interrupt callbacks currently mapped to
+ * each i2c channel
+ */
 static i2c_interrupt_callback_t i2c_interrupt_callbacks[NUM_I2C];
 
 static uint32_t i2c_calculate_ccr(i2c_config_t *config_entry);
@@ -79,8 +153,34 @@ static void i2c_one_byte_reception(i2c_transfer_t *i2c_transfer);
 static void i2c_two_byte_reception(i2c_transfer_t *i2c_transfer);
 static void i2c_n_byte_reception(i2c_transfer_t *i2c_transfer);
 
+/******************************************************************************
+* Function: i2c_init()
+*//**
+* \b Description:
+*
+* 	Carries out the initialisation of the I2C channels as per the information
+* 	in the config table
+*
+*
+* PRE-CONDITION: The config table has been obtained and is non-null
 
-void i2c_init(i2c_config_t *config_table)
+* @return 		void
+*
+* \b Example:
+* @code
+*	const i2c_config_t *config_table = i2c_config_get();
+*	i2c_init(config_table);
+* @endcode
+*
+* @see i2c_config_get
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
+void i2c_init(const i2c_config_t *config_table)
 {
 	for (int i2c_channel = 0; i2c_channel < NUM_I2C; i2c_channel++)
 	{
@@ -88,16 +188,12 @@ void i2c_init(i2c_config_t *config_table)
 		{
 			*I2C_CR1[i2c_channel] &= ~(I2C_CR1_PE_Msk);
 
-			*I2C_CR1[i2c_channel] = config_table[i2c_channel].slave_ack_en << I2C_CR1_ACK_Pos;
+			*I2C_CR1[i2c_channel] = config_table[i2c_channel].ack_en << I2C_CR1_ACK_Pos;
 
-			assert(config_table[i2c_channel].periph_clk_freq_MHz <= 0x32
-					&& config_table[i2c_channel].periph_clk_freq_MHz > 0x01);
-			*I2C_CR2[i2c_channel] |= config_table[i2c_channel].periph_clk_freq_MHz << I2C_CR2_FREQ_Pos
-									| config_table[i2c_channel].it_err_en << I2C_CR2_ITERREN_Pos
-									| config_table[i2c_channel].it_buf_en << I2C_CR2_ITBUFEN_Pos
-									| config_table[i2c_channel].it_evt_en << I2C_CR2_ITEVTEN_Pos
-									| config_table[i2c_channel].dma_en << I2C_CR2_DMAEN_Pos;
+			assert(config_table[i2c_channel].periph_clk_freq_MHz <= 50
+					&& config_table[i2c_channel].periph_clk_freq_MHz > 1);
 
+			*I2C_CR2[i2c_channel] |= config_table[i2c_channel].periph_clk_freq_MHz << I2C_CR2_FREQ_Pos;
 			*I2C_CCR[i2c_channel] |= config_table[i2c_channel].fast_or_std << I2C_CCR_FS_Pos
 									| config_table[i2c_channel].duty_cycle << I2C_CCR_DUTY_Pos;
 
@@ -109,13 +205,92 @@ void i2c_init(i2c_config_t *config_table)
 	}
 }
 
-uint32_t i2c_calculate_ccr(i2c_config_t *config_entry)
+/******************************************************************************
+* Function: i2c_interrupt_control()
+*//**
+* \b Description:
+*
+* 	Enabled or disables the selected interrupt on the selected channel. Caled both by users
+* 	and within the driver itself
+*
+*
+* PRE-CONDITION: The i2c_init function has been carried out successfully
+
+* @return 		void
+*
+* \b Example:
+* @code
+*	i2c_interrupt_control(I2C_2, IT_BUF, INTERRUPT_ENABLED);
+* @endcode
+*
+* @see i2c_init
+* @see i2c_master_transmit_it
+* @see i2c_master_receive_it
+* @see i2c_slave_transmit_it
+* @see i2c_slave_receive_it
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
+void i2c_interrupt_control(i2c_channel_t channel, i2c_interrupt_dma_t interrupt, i2c_interrupt_control_t signal)
+{
+	if (signal == INTERRUPT_ENABLED)
+	{
+		*I2C_CR2[channel] |= (0x01UL) << (8 + interrupt);
+	}
+	else
+	{
+		*I2C_CR2[channel] &= ~(0x01UL) << (8 + interrupt);
+	}
+}
+
+/******************************************************************************
+* Function: i2c_calculate_ccr()
+*//**
+* \b Description:
+*
+* 	Static inline function called from within the driver to carry out the calculation of
+* 	the required pulse length for a given frequency.
+*
+*
+* PRE-CONDITION: The config table has been obtained and is non-null
+
+* @return 		uint32_t
+*
+* \b Example:
+* 	Automatically called within i2c_init
+*
+* @see i2c_init
+* @see i2c_calculate_trise
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
+static inline uint32_t i2c_calculate_ccr(i2c_config_t *config_entry)
 {
 	uint32_t calculated_ccr = 0;
 	if (config_entry->fast_or_std == I2C_SM)
 	{
 		//TODO: Use doxygen to formally present equations
 		assert(config_entry->i2c_op_freq_kHz <= 100);
+		/**
+		 * Equation obtained from RM0383 18.6.8:
+		 * \f$ CCR = \frac{T_(high)}{T_pclk}\f$,
+		 * where
+		 * \f$ T_(high) = \frac{1}{2 \times T_(opfreq)} \f$ (kHz)
+		 * and
+		 * \f$ T_(op_freq) = \frac{1}{f_(opfreq)} \f$
+		 * and \f$ T_(pclk) = \frac{1}{f_(pclk)}
+		 * leading to
+		 * \f$ CCR = \frac{f_pclk (MHz) }{2 \times f_(opfreq) (khZ)}
+		 * 			= \frac{f_pclk}{2000 \times f_(opfreq)}
+		 */
 		calculated_ccr = (config_entry->periph_clk_freq_MHz)/(2000UL*config_entry->i2c_op_freq_kHz);
 	}
 	else if (config_entry->fast_or_std == I2C_FM)
@@ -135,7 +310,7 @@ uint32_t i2c_calculate_ccr(i2c_config_t *config_entry)
 	return (calculated_ccr);
 }
 
-uint32_t i2c_calculate_trise(i2c_config_t *config_entry)
+static inline uint32_t i2c_calculate_trise(i2c_config_t *config_entry)
 {
 	uint32_t calculated_trise = 0;
 	if (config_entry->fast_or_std == I2C_SM)

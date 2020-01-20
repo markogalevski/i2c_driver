@@ -1,10 +1,9 @@
 var searchData=
 [
-  ['gpio_5fmode_5ft',['gpio_mode_t',['../gpio__stm32f411__config_8h.html#a491a2cbfb4e94f2afcc0d5bdef2dc454',1,'gpio_stm32f411_config.h']]],
-  ['gpio_5fmux_5ft',['gpio_mux_t',['../gpio__stm32f411__config_8h.html#ac86e130e5617ffe35f2aa1169d8a67c0',1,'gpio_stm32f411_config.h']]],
-  ['gpio_5foutput_5fspeed_5ft',['gpio_output_speed_t',['../gpio__stm32f411__config_8h.html#aa8c7c905e73523d86cfed9bd45aa9495',1,'gpio_stm32f411_config.h']]],
-  ['gpio_5foutput_5ftype_5ft',['gpio_output_type_t',['../gpio__stm32f411__config_8h.html#a09cae9c54cabb67e47ab4c1200b341c6',1,'gpio_stm32f411_config.h']]],
-  ['gpio_5fpin_5fstate_5ft',['gpio_pin_state_t',['../gpio__stm32f411__config_8h.html#a5e8c50a3dc51d01d0e6bdf2428ee59a7',1,'gpio_stm32f411_config.h']]],
-  ['gpio_5fpin_5ft',['gpio_pin_t',['../gpio__stm32f411__config_8h.html#abf6d98e99fb0fb81b56c89f29bd6120e',1,'gpio_stm32f411_config.h']]],
-  ['gpio_5fresistor_5ft',['gpio_resistor_t',['../gpio__stm32f411__config_8h.html#ae69599cbb4f87bfc9da21f3db8b0fe3a',1,'gpio_stm32f411_config.h']]]
+  ['i2c_5fack_5fen_5ft',['i2c_ack_en_t',['../i2c__stm32f411__config_8h.html#aeb7fa36e574586d96827dab6c0778bab',1,'i2c_stm32f411_config.h']]],
+  ['i2c_5fchannel_5ft',['i2c_channel_t',['../i2c__stm32f411__config_8h.html#aeb977d39938deb53aac8a92cd93794cb',1,'i2c_stm32f411_config.h']]],
+  ['i2c_5fenabled_5ft',['i2c_enabled_t',['../i2c__stm32f411__config_8h.html#a560af71171eca5e36b8189d884edb6cf',1,'i2c_stm32f411_config.h']]],
+  ['i2c_5ffast_5fslow_5ft',['i2c_fast_slow_t',['../i2c__stm32f411__config_8h.html#a44cba57aedb312d615b0f638871ef72e',1,'i2c_stm32f411_config.h']]],
+  ['i2c_5ffm_5fduty_5fcycle_5ft',['i2c_fm_duty_cycle_t',['../i2c__stm32f411__config_8h.html#adf0606cd4ff20e02de1e8ef11041e1e3',1,'i2c_stm32f411_config.h']]],
+  ['i2c_5finterrupt_5fdma_5ft',['i2c_interrupt_dma_t',['../i2c__stm32f411__config_8h.html#affa3a97ca06b5286062d75601e478fab',1,'i2c_stm32f411_config.h']]]
 ];

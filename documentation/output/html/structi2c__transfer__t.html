@@ -86,22 +86,83 @@ $(document).ready(function(){initNavTree('structi2c__transfer__t.html','');});
 <div class="title">i2c_transfer_t Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="i2c__interface_8h_source.html">i2c_interface.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:add3e500ab7f1fe4dcf53e83a5a908679"><td class="memItemLeft" align="right" valign="top"><a id="add3e500ab7f1fe4dcf53e83a5a908679"></a>
-i2c_channel_t&#160;</td><td class="memItemRight" valign="bottom"><b>channel</b></td></tr>
+<tr class="memitem:add3e500ab7f1fe4dcf53e83a5a908679"><td class="memItemLeft" align="right" valign="top"><a class="el" href="i2c__stm32f411__config_8h.html#aeb977d39938deb53aac8a92cd93794cb">i2c_channel_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structi2c__transfer__t.html#add3e500ab7f1fe4dcf53e83a5a908679">channel</a></td></tr>
 <tr class="separator:add3e500ab7f1fe4dcf53e83a5a908679"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56ed84df35de10bdb65e72b184309497"><td class="memItemLeft" align="right" valign="top"><a id="a56ed84df35de10bdb65e72b184309497"></a>
-uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><b>buffer</b></td></tr>
+<tr class="memitem:a56ed84df35de10bdb65e72b184309497"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structi2c__transfer__t.html#a56ed84df35de10bdb65e72b184309497">buffer</a></td></tr>
 <tr class="separator:a56ed84df35de10bdb65e72b184309497"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0cc3d1d5957cce931bb8e02130c6550"><td class="memItemLeft" align="right" valign="top"><a id="af0cc3d1d5957cce931bb8e02130c6550"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>data_length</b></td></tr>
+<tr class="memitem:af0cc3d1d5957cce931bb8e02130c6550"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structi2c__transfer__t.html#af0cc3d1d5957cce931bb8e02130c6550">data_length</a></td></tr>
 <tr class="separator:af0cc3d1d5957cce931bb8e02130c6550"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac93868aeda435dfb685a0a0020e5c7a4"><td class="memItemLeft" align="right" valign="top"><a id="ac93868aeda435dfb685a0a0020e5c7a4"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>slave_address</b></td></tr>
+<tr class="memitem:ac93868aeda435dfb685a0a0020e5c7a4"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structi2c__transfer__t.html#ac93868aeda435dfb685a0a0020e5c7a4">slave_address</a></td></tr>
 <tr class="separator:ac93868aeda435dfb685a0a0020e5c7a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Generic transfer structure, independent of implementation. Passed into transmission functions. </p>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a id="a56ed84df35de10bdb65e72b184309497"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56ed84df35de10bdb65e72b184309497">&#9670;&nbsp;</a></span>buffer</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t* buffer</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The data buffer </p>
+
+</div>
+</div>
+<a id="add3e500ab7f1fe4dcf53e83a5a908679"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add3e500ab7f1fe4dcf53e83a5a908679">&#9670;&nbsp;</a></span>channel</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="i2c__stm32f411__config_8h.html#aeb977d39938deb53aac8a92cd93794cb">i2c_channel_t</a> channel</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The target I2C peripheral </p>
+
+</div>
+</div>
+<a id="af0cc3d1d5957cce931bb8e02130c6550"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0cc3d1d5957cce931bb8e02130c6550">&#9670;&nbsp;</a></span>data_length</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t data_length</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The number of bytes to be receive/sent </p>
+
+</div>
+</div>
+<a id="ac93868aeda435dfb685a0a0020e5c7a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac93868aeda435dfb685a0a0020e5c7a4">&#9670;&nbsp;</a></span>slave_address</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t slave_address</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The 7-bit slave address </p>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/marko/Documents/embedded_workspace/i2c_driver/<a class="el" href="i2c__interface_8h_source.html">i2c_interface.h</a></li>
 </ul>

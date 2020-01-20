@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['i2c_5fconfig_5ft',['i2c_config_t',['../structi2c__config__t.html',1,'']]],
-  ['i2c_5ftransfer_5ft',['i2c_transfer_t',['../structi2c__transfer__t.html',1,'']]]
+  ['ack_5fen',['ack_en',['../structi2c__config__t.html#a9f388af9d19184867cbf3583cd1acd56',1,'i2c_config_t']]]
 ];

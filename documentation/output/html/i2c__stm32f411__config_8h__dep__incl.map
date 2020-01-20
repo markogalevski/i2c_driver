@@ -1,0 +1,5 @@
+<map id="/home/marko/Documents/embedded_workspace/i2c_driver/i2c_stm32f411_config.h" name="/home/marko/Documents/embedded_workspace/i2c_driver/i2c_stm32f411_config.h">
+<area shape="rect" id="node2" href="$i2c__interface_8h.html" title="General interface covering user accesses to the i2c communication bus. " alt="" coords="5,109,183,165"/>
+<area shape="rect" id="node4" href="$i2c__stm32f411__config_8c.html" title="Contains the configuration information for each I2C channel. " alt="" coords="207,109,410,165"/>
+<area shape="rect" id="node3" href="$i2c__stm32f411_8c.html" title="Chip specific implementation for i2c communication. " alt="" coords="5,213,183,269"/>
+</map>

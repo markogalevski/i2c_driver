@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['output_5fspeed',['output_speed',['../structgpio__config__t.html#ac73298500a7a55286292448e82fcbdbf',1,'gpio_config_t']]],
-  ['output_5ftype',['output_type',['../structgpio__config__t.html#abebe3aee0015b70fbbbd12a796451b62',1,'gpio_config_t']]]
+  ['channel',['channel',['../structi2c__transfer__t.html#add3e500ab7f1fe4dcf53e83a5a908679',1,'i2c_transfer_t']]]
 ];

@@ -1,0 +1,4 @@
+\form#0:$ CCR = \frac{T_(high)}{T_pclk}$
+\form#1:$ T_(high) = \frac{1}{2 \times T_(opfreq)} $
+\form#2:$ T_(op_freq) = \frac{1}{f_(opfreq)} $
+\form#3:$ T_(pclk) = \frac{1}{f_(pclk)} leading to $
