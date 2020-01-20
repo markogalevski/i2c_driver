@@ -83,7 +83,8 @@ $(document).ready(function(){initNavTree('i2c__stm32f411_8c.html','');});
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">/home/marko/Documents/embedded_workspace/i2c_driver/i2c_stm32f411.c File Reference</div>  </div>
 </div><!--header-->
@@ -118,22 +119,49 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ae99e5b0136eac4804b715a7e570203f1"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__stm32f411_8c.html#ae99e5b0136eac4804b715a7e570203f1">i2c_calculate_ccr</a> (<a class="el" href="structi2c__config__t.html">i2c_config_t</a> *config_entry)</td></tr>
+<tr class="separator:ae99e5b0136eac4804b715a7e570203f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e712a9c22272b17205ca8a96e42bce2"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__stm32f411_8c.html#a3e712a9c22272b17205ca8a96e42bce2">i2c_calculate_trise</a> (<a class="el" href="structi2c__config__t.html">i2c_config_t</a> *config_entry)</td></tr>
+<tr class="separator:a3e712a9c22272b17205ca8a96e42bce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a894fbc905a328b73d55e3b5643e7324d"><td class="memItemLeft" align="right" valign="top"><a id="a894fbc905a328b73d55e3b5643e7324d"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_clear_addr_bit</b> (<a class="el" href="i2c__stm32f411__config_8h.html#aeb977d39938deb53aac8a92cd93794cb">i2c_channel_t</a> channel)</td></tr>
+<tr class="separator:a894fbc905a328b73d55e3b5643e7324d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a914bde40252b10fda83e9bb224be689f"><td class="memItemLeft" align="right" valign="top"><a id="a914bde40252b10fda83e9bb224be689f"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_clear_stopf_bit</b> (<a class="el" href="i2c__stm32f411__config_8h.html#aeb977d39938deb53aac8a92cd93794cb">i2c_channel_t</a> channel)</td></tr>
+<tr class="separator:a914bde40252b10fda83e9bb224be689f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa03554ab51ea3714271a25dcadecddf5"><td class="memItemLeft" align="right" valign="top"><a id="aa03554ab51ea3714271a25dcadecddf5"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_one_byte_reception</b> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *i2c_transfer)</td></tr>
+<tr class="separator:aa03554ab51ea3714271a25dcadecddf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac02b756cb1e31fccfb2e232443c13e6d"><td class="memItemLeft" align="right" valign="top"><a id="ac02b756cb1e31fccfb2e232443c13e6d"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_two_byte_reception</b> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *i2c_transfer)</td></tr>
+<tr class="separator:ac02b756cb1e31fccfb2e232443c13e6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5b4eb0b2666497f0907cd93dac3e92c"><td class="memItemLeft" align="right" valign="top"><a id="ad5b4eb0b2666497f0907cd93dac3e92c"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_n_byte_reception</b> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *i2c_transfer)</td></tr>
+<tr class="separator:ad5b4eb0b2666497f0907cd93dac3e92c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7dd55df51c5f66cfb45d6992dfa2ee81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__stm32f411_8c.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a> (const <a class="el" href="structi2c__config__t.html">i2c_config_t</a> *config_table)</td></tr>
 <tr class="separator:a7dd55df51c5f66cfb45d6992dfa2ee81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb254b70fd45edfd318f09a62a5bffa4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__stm32f411_8c.html#abb254b70fd45edfd318f09a62a5bffa4">i2c_interrupt_control</a> (<a class="el" href="i2c__stm32f411__config_8h.html#aeb977d39938deb53aac8a92cd93794cb">i2c_channel_t</a> channel, <a class="el" href="i2c__stm32f411__config_8h.html#affa3a97ca06b5286062d75601e478fab">i2c_interrupt_dma_t</a> interrupt, i2c_interrupt_control_t signal)</td></tr>
 <tr class="separator:abb254b70fd45edfd318f09a62a5bffa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdf6a4c6c91e23ec00e7e896b905c94f"><td class="memItemLeft" align="right" valign="top"><a id="abdf6a4c6c91e23ec00e7e896b905c94f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_master_transmit</b> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *i2c_transfer)</td></tr>
+<tr class="memitem:abdf6a4c6c91e23ec00e7e896b905c94f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__stm32f411_8c.html#abdf6a4c6c91e23ec00e7e896b905c94f">i2c_master_transmit</a> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *i2c_transfer)</td></tr>
 <tr class="separator:abdf6a4c6c91e23ec00e7e896b905c94f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5a33cd538ed7c44168f864312fca49c"><td class="memItemLeft" align="right" valign="top"><a id="ab5a33cd538ed7c44168f864312fca49c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_master_receive</b> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *i2c_transfer)</td></tr>
+<tr class="memitem:ab5a33cd538ed7c44168f864312fca49c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__stm32f411_8c.html#ab5a33cd538ed7c44168f864312fca49c">i2c_master_receive</a> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *i2c_transfer)</td></tr>
 <tr class="separator:ab5a33cd538ed7c44168f864312fca49c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e2a4f5a63d83c6b46c34a93c8d6a645"><td class="memItemLeft" align="right" valign="top"><a id="a0e2a4f5a63d83c6b46c34a93c8d6a645"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_slave_transmit</b> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *i2c_transfer)</td></tr>
+<tr class="memitem:a0e2a4f5a63d83c6b46c34a93c8d6a645"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__stm32f411_8c.html#a0e2a4f5a63d83c6b46c34a93c8d6a645">i2c_slave_transmit</a> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *i2c_transfer)</td></tr>
 <tr class="separator:a0e2a4f5a63d83c6b46c34a93c8d6a645"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64a634fcf29ab61888a048599f3c4e2f"><td class="memItemLeft" align="right" valign="top"><a id="a64a634fcf29ab61888a048599f3c4e2f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_slave_receive</b> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *i2c_transfer)</td></tr>
+<tr class="memitem:a64a634fcf29ab61888a048599f3c4e2f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__stm32f411_8c.html#a64a634fcf29ab61888a048599f3c4e2f">i2c_slave_receive</a> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *i2c_transfer)</td></tr>
 <tr class="separator:a64a634fcf29ab61888a048599f3c4e2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbb56255627d0875c71b42be1ee32b9e"><td class="memItemLeft" align="right" valign="top"><a id="abbb56255627d0875c71b42be1ee32b9e"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_master_transmit_it_callback</b> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *i2c_transfer)</td></tr>
+<tr class="separator:abbb56255627d0875c71b42be1ee32b9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79c51d3103b4d3b6d092498b45b0d827"><td class="memItemLeft" align="right" valign="top"><a id="a79c51d3103b4d3b6d092498b45b0d827"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_master_receive_it_callback</b> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *i2c_transfer)</td></tr>
+<tr class="separator:a79c51d3103b4d3b6d092498b45b0d827"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b57637e122f67b99ef82bc3f061b338"><td class="memItemLeft" align="right" valign="top"><a id="a2b57637e122f67b99ef82bc3f061b338"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_slave_transmit_it_callback</b> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *i2c_transfer)</td></tr>
+<tr class="separator:a2b57637e122f67b99ef82bc3f061b338"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad98166f3711d989a0215d304962d8e86"><td class="memItemLeft" align="right" valign="top"><a id="ad98166f3711d989a0215d304962d8e86"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_slave_receive_it_callback</b> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *i2c_transfer)</td></tr>
+<tr class="separator:ad98166f3711d989a0215d304962d8e86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31c8ac181002946fad875ca3becaffa8"><td class="memItemLeft" align="right" valign="top"><a id="a31c8ac181002946fad875ca3becaffa8"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_master_transmit_it</b> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *i2c_transfer)</td></tr>
 <tr class="separator:a31c8ac181002946fad875ca3becaffa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -149,6 +177,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_slave_receive_it<
 <tr class="memitem:ae6559291ec257841b811c45e42c85153"><td class="memItemLeft" align="right" valign="top"><a id="ae6559291ec257841b811c45e42c85153"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_irq_handler</b> (<a class="el" href="i2c__stm32f411__config_8h.html#aeb977d39938deb53aac8a92cd93794cb">i2c_channel_t</a> channel)</td></tr>
 <tr class="separator:ae6559291ec257841b811c45e42c85153"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ad4cbdd967770854672b08821470393b8"><td class="memItemLeft" align="right" valign="top">static volatile uint16_t *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__stm32f411_8c.html#ad4cbdd967770854672b08821470393b8">I2C_CR1</a> [NUM_I2C]</td></tr>
+<tr class="separator:ad4cbdd967770854672b08821470393b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63d83e05ce9d60cbfc6c386a073f4203"><td class="memItemLeft" align="right" valign="top">static volatile uint16_t *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__stm32f411_8c.html#a63d83e05ce9d60cbfc6c386a073f4203">I2C_CR2</a> [NUM_I2C]</td></tr>
+<tr class="separator:a63d83e05ce9d60cbfc6c386a073f4203"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa75ae25a4c129cfc1b3820c487f7b993"><td class="memItemLeft" align="right" valign="top">static volatile uint16_t *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__stm32f411_8c.html#aa75ae25a4c129cfc1b3820c487f7b993">I2C_OAR1</a> [NUM_I2C]</td></tr>
+<tr class="separator:aa75ae25a4c129cfc1b3820c487f7b993"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace2e83248de2495da3f42bdc368b855f"><td class="memItemLeft" align="right" valign="top">static volatile uint16_t *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__stm32f411_8c.html#ace2e83248de2495da3f42bdc368b855f">I2C_OAR2</a> [NUM_I2C]</td></tr>
+<tr class="separator:ace2e83248de2495da3f42bdc368b855f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d487bd1deb18aca4d48d8856cc737e3"><td class="memItemLeft" align="right" valign="top">static volatile uint16_t *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__stm32f411_8c.html#a1d487bd1deb18aca4d48d8856cc737e3">I2C_DR</a> [NUM_I2C]</td></tr>
+<tr class="separator:a1d487bd1deb18aca4d48d8856cc737e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c2c111a3af2325c4458e7d12bd7369b"><td class="memItemLeft" align="right" valign="top">static volatile uint16_t *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__stm32f411_8c.html#a3c2c111a3af2325c4458e7d12bd7369b">I2C_SR1</a> [NUM_I2C]</td></tr>
+<tr class="separator:a3c2c111a3af2325c4458e7d12bd7369b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a908547d2ff7087833683656741ec066b"><td class="memItemLeft" align="right" valign="top">static volatile uint16_t *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__stm32f411_8c.html#a908547d2ff7087833683656741ec066b">I2C_SR2</a> [NUM_I2C]</td></tr>
+<tr class="separator:a908547d2ff7087833683656741ec066b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fd9567fdbfa333c53a4f387bc4bacb1"><td class="memItemLeft" align="right" valign="top">static volatile uint16_t *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__stm32f411_8c.html#a6fd9567fdbfa333c53a4f387bc4bacb1">I2C_CCR</a> [NUM_I2C]</td></tr>
+<tr class="separator:a6fd9567fdbfa333c53a4f387bc4bacb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee7de5bd8fbebf1dea6af907135b7b90"><td class="memItemLeft" align="right" valign="top">static volatile uint16_t *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__stm32f411_8c.html#aee7de5bd8fbebf1dea6af907135b7b90">I2C_TRISE</a> [NUM_I2C]</td></tr>
+<tr class="separator:aee7de5bd8fbebf1dea6af907135b7b90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1111dc80841d83d13abb23041aaec374"><td class="memItemLeft" align="right" valign="top">static volatile uint16_t *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__stm32f411_8c.html#a1111dc80841d83d13abb23041aaec374">I2C_FLTR</a> [NUM_I2C]</td></tr>
+<tr class="separator:a1111dc80841d83d13abb23041aaec374"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c8102c884dc7bb481c588dbd331dbee"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__stm32f411_8c.html#a7c8102c884dc7bb481c588dbd331dbee">i2c_interrupt_transfers</a> [NUM_I2C]</td></tr>
+<tr class="separator:a7c8102c884dc7bb481c588dbd331dbee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeaf595b22badca69fe7ed97eef23a2e3"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="i2c__stm32f411_8c.html#aa4b1bac2c655ba891158909f225d5d7b">i2c_interrupt_callback_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__stm32f411_8c.html#aeaf595b22badca69fe7ed97eef23a2e3">i2c_interrupt_callbacks</a> [NUM_I2C]</td></tr>
+<tr class="separator:aeaf595b22badca69fe7ed97eef23a2e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Chip specific implementation for i2c communication. </p>
@@ -200,6 +255,95 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_irq_handler</b> (
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ae99e5b0136eac4804b715a7e570203f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae99e5b0136eac4804b715a7e570203f1">&#9670;&nbsp;</a></span>i2c_calculate_ccr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static uint32_t i2c_calculate_ccr </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structi2c__config__t.html">i2c_config_t</a> *&#160;</td>
+          <td class="paramname"><em>config_entry</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><b>Description:</b> </p><pre class="fragment">Static inline function called from within the driver to carry out the calculation of
+the required pulse length for a given frequency.
+</pre><p>PRE-CONDITION: The config table has been obtained and is non-null</p>
+<p>POST-CONDITION: The appropriate cc value has been calculated and placed in the register</p>
+<dl class="section return"><dt>Returns</dt><dd>uint32_t</dd></dl>
+<p><b>Example:</b> Automatically called within i2c_init</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411_8c.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#a3e712a9c22272b17205ca8a96e42bce2">i2c_calculate_trise</a> <br />
+<b> - CHANGE HISTORY - </b></dd></dl>
+<table align="left" style="width:800px">
+<tr>
+<td>Date </td><td>Software Version </td><td>Initials </td><td>Description  </td></tr>
+</table>
+<p><br />
+<br />
+ </p><hr/>
+ <p>Equation obtained from RM0383 18.6.8: <img class="formulaInl" alt="$ CCR = \frac{T_{high}}{T_{pclk}}$" src="form_9.png"/>, where <img class="formulaInl" alt="$ T_{high} = \frac{1}{2 \times T_{opfreq}} $" src="form_10.png"/> (kHz) and <img class="formulaInl" alt="$ T_{opfreq} = \frac{1}{f_{opfreq}} $" src="form_11.png"/> and <img class="formulaInl" alt="$ T_{pclk} = \frac{1}{f_{pclk}} $" src="form_12.png"/> leading to <img class="formulaInl" alt="$ CCR = \frac{f_{pclk} (MHz) }{2 \times f_{opfreq} (khZ)} = \frac{f_{pclk}}{2000 \times f_{opfreq}} $" src="form_13.png"/></p>
+<p>Equation obtained from RM0383 18.6.8: <img class="formulaInl" alt="$ CCR = \frac{T_{high}}{T_{pclk}}$" src="form_9.png"/>, where <img class="formulaInl" alt="$ T_{high} = \frac{1}{3 \times T_{opfreq}} $" src="form_14.png"/> (kHz) and <img class="formulaInl" alt="$ T_{opfreq} = \frac{1}{f_{opfreq}} $" src="form_11.png"/> and <img class="formulaInl" alt="$ T_{pclk} = \frac{1}{f_{pclk}} $" src="form_12.png"/> leading to <img class="formulaInl" alt="$ CCR = \frac{f_{pclk} (MHz) }{3 \times f_{opfreq} (khZ)} = \frac{f_{pclk}}{3000 \times f_{opfreq}} $" src="form_15.png"/></p>
+<p>Equation obtained from RM0383 18.6.8: <img class="formulaInl" alt="$ CCR = \frac{T_{high}}{T_{pclk}}$" src="form_9.png"/>, where <img class="formulaInl" alt="$ T_{high} = \frac{25}{9 \times T_{opfreq}} $" src="form_16.png"/> (kHz) and <img class="formulaInl" alt="$ T_{opfreq} = \frac{1}{f_{opfreq}} $" src="form_11.png"/> and <img class="formulaInl" alt="$ T_{pclk} = \frac{1}{f_{pclk}} $" src="form_12.png"/> leading to <img class="formulaInl" alt="$ CCR = \frac{9 \times f_{pclk} (MHz) }{25 \times f_{opfreq} (khZ)} = \frac{9 \times f_{pclk}}{25000 \times f_{opfreq}} $" src="form_17.png"/></p>
+
+</div>
+</div>
+<a id="a3e712a9c22272b17205ca8a96e42bce2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e712a9c22272b17205ca8a96e42bce2">&#9670;&nbsp;</a></span>i2c_calculate_trise()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static uint32_t i2c_calculate_trise </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structi2c__config__t.html">i2c_config_t</a> *&#160;</td>
+          <td class="paramname"><em>config_entry</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><b>Description:</b> </p><pre class="fragment">Static inline function called from within the driver to carry out the calculation of
+the required rise time
+</pre><p>PRE-CONDITION: The config table has been obtained and is non-null</p>
+<p>POST-CONDITION: The appropriate trise value has been calculated and placed in the register</p>
+<dl class="section return"><dt>Returns</dt><dd>uint32_t</dd></dl>
+<p><b>Example:</b> Automatically called within i2c_init</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411_8c.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#ae99e5b0136eac4804b715a7e570203f1">i2c_calculate_ccr</a> <br />
+<b> - CHANGE HISTORY - </b></dd></dl>
+<table align="left" style="width:800px">
+<tr>
+<td>Date </td><td>Software Version </td><td>Initials </td><td>Description  </td></tr>
+</table>
+<p><br />
+<br />
+ </p><hr/>
+ 
+</div>
+</div>
 <a id="a7dd55df51c5f66cfb45d6992dfa2ee81"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7dd55df51c5f66cfb45d6992dfa2ee81">&#9670;&nbsp;</a></span>i2c_init()</h2>
 
@@ -217,9 +361,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_irq_handler</b> (
 </div><div class="memdoc">
 <p><b>Description:</b> </p><pre class="fragment">Carries out the initialisation of the I2C channels as per the information
 in the config table
-</pre><p>PRE-CONDITION: The config table has been obtained and is non-null</p>
+</pre><p>PRE-CONDITION: The config table has been obtained and is non-null PRE-CONDITION: The required GPIO pins for i2c combination have been configured correctly with gpio_init PRE-CONDITION: The appropriate peripheral clocks have been activated</p>
+<p>POST-CONDITION: The selected i2c channels have been activated anda ready to be used</p>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p><b>Example:</b> </p><div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code" href="structi2c__config__t.html">i2c_config_t</a> *config_table = <a class="code" href="i2c__stm32f411__config_8c.html#a7215d8e7ecb63929b0f5c732b8ce686b">i2c_config_get</a>();</div><div class="line"><a class="code" href="i2c__interface_8h.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a>(config_table);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411__config_8h.html#a7215d8e7ecb63929b0f5c732b8ce686b">i2c_config_get</a> <br />
+<p><b>Example:</b> </p><div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code" href="structi2c__config__t.html">i2c_config_t</a> *config_table = <a class="code" href="i2c__stm32f411__config_8c.html#a7215d8e7ecb63929b0f5c732b8ce686b">i2c_config_get</a>();</div><div class="line"><a class="code" href="i2c__interface_8h.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a>(config_table);</div></div><!-- fragment --><p> POST-CONDITION: The appropraite trise value has been calculated and placed in the register</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411__config_8h.html#a7215d8e7ecb63929b0f5c732b8ce686b">i2c_config_get</a> <br />
 <b> - CHANGE HISTORY - </b></dd></dl>
 <table align="left" style="width:800px">
 <tr>
@@ -265,6 +411,7 @@ in the config table
 <p><b>Description:</b> </p><pre class="fragment">Enabled or disables the selected interrupt on the selected channel. Caled both by users
 and within the driver itself
 </pre><p>PRE-CONDITION: The i2c_init function has been carried out successfully</p>
+<p>POST-CONDITION: The desired interrupt on the selected device has been activated/disabled</p>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
 <p><b>Example:</b> </p><div class="fragment"><div class="line"><a class="code" href="i2c__interface_8h.html#abb254b70fd45edfd318f09a62a5bffa4">i2c_interrupt_control</a>(I2C_2, <a class="code" href="i2c__stm32f411__config_8h.html#affa3a97ca06b5286062d75601e478faba99fa7f9ecd397e8f287d6638e3a6c5c7">IT_BUF</a>, INTERRUPT_ENABLED);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411_8c.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a> </dd>
 <dd>
@@ -284,6 +431,455 @@ i2c_slave_receive_it <br />
 <br />
  </p><hr/>
  
+</div>
+</div>
+<a id="ab5a33cd538ed7c44168f864312fca49c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5a33cd538ed7c44168f864312fca49c">&#9670;&nbsp;</a></span>i2c_master_receive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void i2c_master_receive </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *&#160;</td>
+          <td class="paramname"><em>i2c_transfer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><b>Description:</b> </p><pre class="fragment">Initiates a blocking reception in master mode using the parameters specified in transfer
+</pre><p>PRE-CONDITION: i2c_init has been carried out properly PRE-CONDITION: The data buffer points to non-null location and the transfer length is non-zero.</p>
+<p>POST-CONDITION: The data has been received from the slave</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c_transfer</td><td>is a pointer to a struct which contains all the information required to carry out a transfer. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p><b>Example:</b> </p><div class="fragment"><div class="line"><a class="code" href="i2c__interface_8h.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a>(config_table);</div><div class="line"><a class="code" href="structi2c__transfer__t.html">i2c_transfer_t</a> accelerometer_comm;</div><div class="line">accelerometer_comm.<a class="code" href="structi2c__transfer__t.html#add3e500ab7f1fe4dcf53e83a5a908679">channel</a> = I2C_2;</div><div class="line">accelerometer_comm.<a class="code" href="structi2c__transfer__t.html#a56ed84df35de10bdb65e72b184309497">buffer</a> = &amp;data_from_accel;</div><div class="line">accelerometer_comm.length = 2;</div><div class="line">accelerometer_comm.address = ACCELEROMETER_ADDRESS;</div><div class="line"><a class="code" href="i2c__interface_8h.html#a4ab15f0708aa443b4e99f69995605253">i2c_master_transmit</a>(&amp;accelerometer_comm);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411_8c.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#abdf6a4c6c91e23ec00e7e896b905c94f">i2c_master_transmit</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#a0e2a4f5a63d83c6b46c34a93c8d6a645">i2c_slave_transmit</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#a64a634fcf29ab61888a048599f3c4e2f">i2c_slave_receive</a> <br />
+<b> - CHANGE HISTORY - </b></dd></dl>
+<table align="left" style="width:800px">
+<tr>
+<td>Date </td><td>Software Version </td><td>Initials </td><td>Description  </td></tr>
+</table>
+<p><br />
+<br />
+ </p><hr/>
+ 
+</div>
+</div>
+<a id="abdf6a4c6c91e23ec00e7e896b905c94f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdf6a4c6c91e23ec00e7e896b905c94f">&#9670;&nbsp;</a></span>i2c_master_transmit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void i2c_master_transmit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *&#160;</td>
+          <td class="paramname"><em>i2c_transfer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><b>Description:</b> </p><pre class="fragment">Initiates a blocking transmission in master mode using the parameters specified in transfer
+</pre><p>PRE-CONDITION: i2c_init has been carried out properly PRE-CONDITION: The data buffer points to non-null location and the transfer length is non-zero.</p>
+<p>POST-CONDITION: The data has been sent to the slave</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c_transfer</td><td>is a pointer to a struct which contains all the information required to carry out a transfer. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p><b>Example:</b> </p><div class="fragment"><div class="line"><a class="code" href="i2c__interface_8h.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a>(config_table);</div><div class="line"><a class="code" href="structi2c__transfer__t.html">i2c_transfer_t</a> motor_controller_comm;</div><div class="line">motor_controller_comm.<a class="code" href="structi2c__transfer__t.html#add3e500ab7f1fe4dcf53e83a5a908679">channel</a> = I2C_2;</div><div class="line">motor_controller_comm.<a class="code" href="structi2c__transfer__t.html#a56ed84df35de10bdb65e72b184309497">buffer</a> = &amp;data_to_motor;</div><div class="line">motor_controller_comm.length = 4;</div><div class="line">motor_controller_comm.address = MOTOR_CONTROLLER_ADDRESS;</div><div class="line"><a class="code" href="i2c__interface_8h.html#a4ab15f0708aa443b4e99f69995605253">i2c_master_transmit</a>(&amp;motor_controller_comm);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411_8c.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#ab5a33cd538ed7c44168f864312fca49c">i2c_master_receive</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#a0e2a4f5a63d83c6b46c34a93c8d6a645">i2c_slave_transmit</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#a64a634fcf29ab61888a048599f3c4e2f">i2c_slave_receive</a> <br />
+<b> - CHANGE HISTORY - </b></dd></dl>
+<table align="left" style="width:800px">
+<tr>
+<td>Date </td><td>Software Version </td><td>Initials </td><td>Description  </td></tr>
+</table>
+<p><br />
+<br />
+ </p><hr/>
+ 
+</div>
+</div>
+<a id="a64a634fcf29ab61888a048599f3c4e2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64a634fcf29ab61888a048599f3c4e2f">&#9670;&nbsp;</a></span>i2c_slave_receive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void i2c_slave_receive </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *&#160;</td>
+          <td class="paramname"><em>i2c_transfer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><b>Description:</b> </p><pre class="fragment">Initiates a blocking reception in master mode using the parameters specified in transfer
+</pre><p>PRE-CONDITION: i2c_init has been carried out properly PRE-CONDITION: The data buffer points to non-null location and the transfer length is non-zero.</p>
+<p>POST-CONDITION: The data has been received from the slave</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c_transfer</td><td>is a pointer to a struct which contains all the information required to carry out a transfer. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p><b>Example:</b> </p><div class="fragment"><div class="line"><a class="code" href="i2c__interface_8h.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a>(config_table);</div><div class="line"><a class="code" href="structi2c__transfer__t.html">i2c_transfer_t</a> accelerometer_comm;</div><div class="line">accelerometer_comm.<a class="code" href="structi2c__transfer__t.html#add3e500ab7f1fe4dcf53e83a5a908679">channel</a> = I2C_2;</div><div class="line">accelerometer_comm.<a class="code" href="structi2c__transfer__t.html#a56ed84df35de10bdb65e72b184309497">buffer</a> = &amp;data_from_accel;</div><div class="line">accelerometer_comm.length = 2;</div><div class="line">accelerometer_comm.address = ACCELEROMETER_ADDRESS;</div><div class="line"><a class="code" href="i2c__interface_8h.html#a4ab15f0708aa443b4e99f69995605253">i2c_master_transmit</a>(&amp;accelerometer_comm);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411_8c.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#abdf6a4c6c91e23ec00e7e896b905c94f">i2c_master_transmit</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#a0e2a4f5a63d83c6b46c34a93c8d6a645">i2c_slave_transmit</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#a64a634fcf29ab61888a048599f3c4e2f">i2c_slave_receive</a> <br />
+<b> - CHANGE HISTORY - </b></dd></dl>
+<table align="left" style="width:800px">
+<tr>
+<td>Date </td><td>Software Version </td><td>Initials </td><td>Description  </td></tr>
+</table>
+<p><br />
+<br />
+ </p><hr/>
+ 
+</div>
+</div>
+<a id="a0e2a4f5a63d83c6b46c34a93c8d6a645"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e2a4f5a63d83c6b46c34a93c8d6a645">&#9670;&nbsp;</a></span>i2c_slave_transmit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void i2c_slave_transmit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *&#160;</td>
+          <td class="paramname"><em>i2c_transfer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><b>Description:</b> </p><pre class="fragment">Initiates a blocking transmission in slave mode using the parameters specified in transfer
+</pre><p>PRE-CONDITION: i2c_init has been carried out properly PRE-CONDITION: The data buffer points to non-null location and the transfer length is non-zero.</p>
+<p>POST-CONDITION: The data has been sent to the master</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c_transfer</td><td>is a pointer to a struct which contains all the information required to carry out a transfer. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p><b>Example:</b> </p><div class="fragment"><div class="line"><a class="code" href="i2c__interface_8h.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a>(config_table);</div><div class="line"><a class="code" href="structi2c__transfer__t.html">i2c_transfer_t</a> motor_controller_comm;</div><div class="line">motor_controller_comm.<a class="code" href="structi2c__transfer__t.html#add3e500ab7f1fe4dcf53e83a5a908679">channel</a> = I2C_2;</div><div class="line">motor_controller_comm.<a class="code" href="structi2c__transfer__t.html#a56ed84df35de10bdb65e72b184309497">buffer</a> = &amp;data_to_motor;</div><div class="line">motor_controller_comm.length = 4;</div><div class="line">motor_controller_comm.address = MOTOR_CONTROLLER_ADDRESS;</div><div class="line"><a class="code" href="i2c__interface_8h.html#a4ab15f0708aa443b4e99f69995605253">i2c_master_transmit</a>(&amp;motor_controller_comm);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411_8c.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#abdf6a4c6c91e23ec00e7e896b905c94f">i2c_master_transmit</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#a0e2a4f5a63d83c6b46c34a93c8d6a645">i2c_slave_transmit</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#a64a634fcf29ab61888a048599f3c4e2f">i2c_slave_receive</a> <br />
+<b> - CHANGE HISTORY - </b></dd></dl>
+<table align="left" style="width:800px">
+<tr>
+<td>Date </td><td>Software Version </td><td>Initials </td><td>Description  </td></tr>
+</table>
+<p><br />
+<br />
+ </p><hr/>
+ 
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a6fd9567fdbfa333c53a4f387bc4bacb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fd9567fdbfa333c53a4f387bc4bacb1">&#9670;&nbsp;</a></span>I2C_CCR</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint16_t* const I2C_CCR[NUM_I2C]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{</div><div class="line">    (uint16_t *)I2C1_BASE + 0x1CUL, (uint16_t *)I2C2_BASE + 0x1CUL,</div><div class="line">    (uint16_t *)I2C3_BASE + 0x1CUL</div><div class="line">}</div></div><!-- fragment --><p>Array of pointers to the clock control registers </p>
+
+</div>
+</div>
+<a id="ad4cbdd967770854672b08821470393b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4cbdd967770854672b08821470393b8">&#9670;&nbsp;</a></span>I2C_CR1</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint16_t* const I2C_CR1[NUM_I2C]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{</div><div class="line">    (uint16_t *)I2C1_BASE, (uint16_t *)I2C2_BASE, (uint16_t *)I2C3_BASE</div><div class="line">}</div></div><!-- fragment --><p>Array of pointers to the Control Register 1 registers </p>
+
+</div>
+</div>
+<a id="a63d83e05ce9d60cbfc6c386a073f4203"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63d83e05ce9d60cbfc6c386a073f4203">&#9670;&nbsp;</a></span>I2C_CR2</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint16_t* const I2C_CR2[NUM_I2C]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{</div><div class="line">    (uint16_t *)I2C1_BASE + 0x04UL, (uint16_t *)I2C2_BASE + 0x04UL,</div><div class="line">    (uint16_t *)I2C3_BASE + 0x04UL</div><div class="line"></div><div class="line">}</div></div><!-- fragment --><p>Array of pointers to the Control Register 2 registers </p>
+
+</div>
+</div>
+<a id="a1d487bd1deb18aca4d48d8856cc737e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d487bd1deb18aca4d48d8856cc737e3">&#9670;&nbsp;</a></span>I2C_DR</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint16_t* const I2C_DR[NUM_I2C]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{</div><div class="line">    (uint16_t *)I2C1_BASE + 0x10UL, (uint16_t *)I2C2_BASE + 0x10UL,</div><div class="line">    (uint16_t *)I2C3_BASE + 0x10UL</div><div class="line">}</div></div><!-- fragment --><p>Array of pointers to the Data registers </p>
+
+</div>
+</div>
+<a id="a1111dc80841d83d13abb23041aaec374"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1111dc80841d83d13abb23041aaec374">&#9670;&nbsp;</a></span>I2C_FLTR</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint16_t* const I2C_FLTR[NUM_I2C]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{</div><div class="line">    (uint16_t *)I2C1_BASE + 0x24UL, (uint16_t *)I2C2_BASE + 0x24UL,</div><div class="line">    (uint16_t *)I2C3_BASE + 0x24UL</div><div class="line">}</div></div><!-- fragment --><p>Array of pointers to the filter registers </p>
+
+</div>
+</div>
+<a id="aeaf595b22badca69fe7ed97eef23a2e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeaf595b22badca69fe7ed97eef23a2e3">&#9670;&nbsp;</a></span>i2c_interrupt_callbacks</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="i2c__stm32f411_8c.html#aa4b1bac2c655ba891158909f225d5d7b">i2c_interrupt_callback_t</a> i2c_interrupt_callbacks[NUM_I2C]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Static array containing interrupt callbacks currently mapped to each i2c channel </p>
+
+</div>
+</div>
+<a id="a7c8102c884dc7bb481c588dbd331dbee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c8102c884dc7bb481c588dbd331dbee">&#9670;&nbsp;</a></span>i2c_interrupt_transfers</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> i2c_interrupt_transfers[NUM_I2C]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Static array which holds copies of requested interrupt based transfers </p>
+
+</div>
+</div>
+<a id="aa75ae25a4c129cfc1b3820c487f7b993"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa75ae25a4c129cfc1b3820c487f7b993">&#9670;&nbsp;</a></span>I2C_OAR1</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint16_t* const I2C_OAR1[NUM_I2C]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{</div><div class="line">    (uint16_t *)I2C1_BASE + 0x08UL, (uint16_t *)I2C2_BASE + 0x08UL,</div><div class="line">    (uint16_t *)I2C3_BASE + 0x08UL</div><div class="line">}</div></div><!-- fragment --><p>Array of pointers to the Own Address 1 registers </p>
+
+</div>
+</div>
+<a id="ace2e83248de2495da3f42bdc368b855f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace2e83248de2495da3f42bdc368b855f">&#9670;&nbsp;</a></span>I2C_OAR2</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint16_t* const I2C_OAR2[NUM_I2C]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{</div><div class="line">    (uint16_t *)I2C1_BASE + 0x0CUL, (uint16_t *)I2C2_BASE + 0x0CUL,</div><div class="line">    (uint16_t *)I2C3_BASE + 0x0CUL</div><div class="line">}</div></div><!-- fragment --><p>Array of pointers to the Own Address 2 registers </p>
+
+</div>
+</div>
+<a id="a3c2c111a3af2325c4458e7d12bd7369b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c2c111a3af2325c4458e7d12bd7369b">&#9670;&nbsp;</a></span>I2C_SR1</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint16_t* const I2C_SR1[NUM_I2C]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{</div><div class="line">    (uint16_t *)I2C1_BASE + 0x14UL, (uint16_t *)I2C2_BASE + 0x14UL,</div><div class="line">    (uint16_t *)I2C3_BASE + 0x14UL</div><div class="line">}</div></div><!-- fragment --><p>Array of pointers to the Status Register 1 registers </p>
+
+</div>
+</div>
+<a id="a908547d2ff7087833683656741ec066b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a908547d2ff7087833683656741ec066b">&#9670;&nbsp;</a></span>I2C_SR2</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint16_t* const I2C_SR2[NUM_I2C]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{</div><div class="line">    (uint16_t *)I2C1_BASE + 0x18UL, (uint16_t *)I2C2_BASE + 0x18UL,</div><div class="line">    (uint16_t *)I2C3_BASE + 0x18UL</div><div class="line">}</div></div><!-- fragment --><p>Array of pointers to the Status Register 2 registers </p>
+
+</div>
+</div>
+<a id="aee7de5bd8fbebf1dea6af907135b7b90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee7de5bd8fbebf1dea6af907135b7b90">&#9670;&nbsp;</a></span>I2C_TRISE</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint16_t* const I2C_TRISE[NUM_I2C]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{</div><div class="line">    (uint16_t *)I2C1_BASE + 0x20UL, (uint16_t *)I2C2_BASE + 0x20UL,</div><div class="line">    (uint16_t *)I2C3_BASE + 0x20UL</div><div class="line">}</div></div><!-- fragment --><p>Array of pointers to the rise time registers </p>
+
 </div>
 </div>
 </div><!-- contents -->

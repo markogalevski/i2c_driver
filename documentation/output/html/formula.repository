@@ -2,3 +2,17 @@
 \form#1:$ T_(high) = \frac{1}{2 \times T_(opfreq)} $
 \form#2:$ T_(op_freq) = \frac{1}{f_(opfreq)} $
 \form#3:$ T_(pclk) = \frac{1}{f_(pclk)} leading to $
+\form#4:$ CCR = \frac{T_high}{T_pclk}$
+\form#5:$ T_high = \frac{1}{2 \times T_opfreq} $
+\form#6:$ T_op_freq = \frac{1}{f_opfreq} $
+\form#7:$ T_pclk = \frac{1}{f_pclk} $
+\form#8:$ CCR = \frac{f_pclk (MHz) }{2 \times f_opfreq (khZ)} = \frac{f_pclk}{2000 \times f_opfreq} $
+\form#9:$ CCR = \frac{T_{high}}{T_{pclk}}$
+\form#10:$ T_{high} = \frac{1}{2 \times T_{opfreq}} $
+\form#11:$ T_{opfreq} = \frac{1}{f_{opfreq}} $
+\form#12:$ T_{pclk} = \frac{1}{f_{pclk}} $
+\form#13:$ CCR = \frac{f_{pclk} (MHz) }{2 \times f_{opfreq} (khZ)} = \frac{f_{pclk}}{2000 \times f_{opfreq}} $
+\form#14:$ T_{high} = \frac{1}{3 \times T_{opfreq}} $
+\form#15:$ CCR = \frac{f_{pclk} (MHz) }{3 \times f_{opfreq} (khZ)} = \frac{f_{pclk}}{3000 \times f_{opfreq}} $
+\form#16:$ T_{high} = \frac{25}{9 \times T_{opfreq}} $
+\form#17:$ CCR = \frac{9 \times f_{pclk} (MHz) }{25 \times f_{opfreq} (khZ)} = \frac{9 \times f_{pclk}}{25000 \times f_{opfreq}} $

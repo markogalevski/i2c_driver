@@ -133,17 +133,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_irq_handler</b> (
 <tr class="separator:ae6559291ec257841b811c45e42c85153"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb254b70fd45edfd318f09a62a5bffa4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__interface_8h.html#abb254b70fd45edfd318f09a62a5bffa4">i2c_interrupt_control</a> (<a class="el" href="i2c__stm32f411__config_8h.html#aeb977d39938deb53aac8a92cd93794cb">i2c_channel_t</a> channel, <a class="el" href="i2c__stm32f411__config_8h.html#affa3a97ca06b5286062d75601e478fab">i2c_interrupt_dma_t</a> interrupt, i2c_interrupt_control_t signal)</td></tr>
 <tr class="separator:abb254b70fd45edfd318f09a62a5bffa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ab15f0708aa443b4e99f69995605253"><td class="memItemLeft" align="right" valign="top"><a id="a4ab15f0708aa443b4e99f69995605253"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_master_transmit</b> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *transfer)</td></tr>
+<tr class="memitem:a4ab15f0708aa443b4e99f69995605253"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__interface_8h.html#a4ab15f0708aa443b4e99f69995605253">i2c_master_transmit</a> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *transfer)</td></tr>
 <tr class="separator:a4ab15f0708aa443b4e99f69995605253"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2ad34bdfa19d11f9056db61417ea05b"><td class="memItemLeft" align="right" valign="top"><a id="ae2ad34bdfa19d11f9056db61417ea05b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_master_receive</b> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *transfer)</td></tr>
+<tr class="memitem:ae2ad34bdfa19d11f9056db61417ea05b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__interface_8h.html#ae2ad34bdfa19d11f9056db61417ea05b">i2c_master_receive</a> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *transfer)</td></tr>
 <tr class="separator:ae2ad34bdfa19d11f9056db61417ea05b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50b4f70e87b1f4e92d7adb882b56ec59"><td class="memItemLeft" align="right" valign="top"><a id="a50b4f70e87b1f4e92d7adb882b56ec59"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_slave_transmit</b> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *transfer)</td></tr>
+<tr class="memitem:a50b4f70e87b1f4e92d7adb882b56ec59"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__interface_8h.html#a50b4f70e87b1f4e92d7adb882b56ec59">i2c_slave_transmit</a> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *transfer)</td></tr>
 <tr class="separator:a50b4f70e87b1f4e92d7adb882b56ec59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea536ff4387878f6fa1bb58683d81237"><td class="memItemLeft" align="right" valign="top"><a id="aea536ff4387878f6fa1bb58683d81237"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_slave_receive</b> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *transfer)</td></tr>
+<tr class="memitem:aea536ff4387878f6fa1bb58683d81237"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__interface_8h.html#aea536ff4387878f6fa1bb58683d81237">i2c_slave_receive</a> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *transfer)</td></tr>
 <tr class="separator:aea536ff4387878f6fa1bb58683d81237"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75e2606f382eb2d6e341a38585904fa4"><td class="memItemLeft" align="right" valign="top"><a id="a75e2606f382eb2d6e341a38585904fa4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_master_transmit_it</b> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *transfer)</td></tr>
@@ -184,9 +180,11 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_register_read
 </div><div class="memdoc">
 <p><b>Description:</b> </p><pre class="fragment">Carries out the initialisation of the I2C channels as per the information
 in the config table
-</pre><p>PRE-CONDITION: The config table has been obtained and is non-null</p>
+</pre><p>PRE-CONDITION: The config table has been obtained and is non-null PRE-CONDITION: The required GPIO pins for i2c combination have been configured correctly with gpio_init PRE-CONDITION: The appropriate peripheral clocks have been activated</p>
+<p>POST-CONDITION: The selected i2c channels have been activated anda ready to be used</p>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p><b>Example:</b> </p><div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code" href="structi2c__config__t.html">i2c_config_t</a> *config_table = <a class="code" href="i2c__stm32f411__config_8c.html#a7215d8e7ecb63929b0f5c732b8ce686b">i2c_config_get</a>();</div><div class="line"><a class="code" href="i2c__interface_8h.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a>(config_table);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411__config_8h.html#a7215d8e7ecb63929b0f5c732b8ce686b">i2c_config_get</a> <br />
+<p><b>Example:</b> </p><div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code" href="structi2c__config__t.html">i2c_config_t</a> *config_table = <a class="code" href="i2c__stm32f411__config_8c.html#a7215d8e7ecb63929b0f5c732b8ce686b">i2c_config_get</a>();</div><div class="line"><a class="code" href="i2c__interface_8h.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a>(config_table);</div></div><!-- fragment --><p> POST-CONDITION: The appropraite trise value has been calculated and placed in the register</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411__config_8h.html#a7215d8e7ecb63929b0f5c732b8ce686b">i2c_config_get</a> <br />
 <b> - CHANGE HISTORY - </b></dd></dl>
 <table align="left" style="width:800px">
 <tr>
@@ -232,6 +230,7 @@ in the config table
 <p><b>Description:</b> </p><pre class="fragment">Enabled or disables the selected interrupt on the selected channel. Caled both by users
 and within the driver itself
 </pre><p>PRE-CONDITION: The i2c_init function has been carried out successfully</p>
+<p>POST-CONDITION: The desired interrupt on the selected device has been activated/disabled</p>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
 <p><b>Example:</b> </p><div class="fragment"><div class="line"><a class="code" href="i2c__interface_8h.html#abb254b70fd45edfd318f09a62a5bffa4">i2c_interrupt_control</a>(I2C_2, <a class="code" href="i2c__stm32f411__config_8h.html#affa3a97ca06b5286062d75601e478faba99fa7f9ecd397e8f287d6638e3a6c5c7">IT_BUF</a>, INTERRUPT_ENABLED);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411_8c.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a> </dd>
 <dd>
@@ -242,6 +241,178 @@ i2c_master_receive_it </dd>
 i2c_slave_transmit_it </dd>
 <dd>
 i2c_slave_receive_it <br />
+<b> - CHANGE HISTORY - </b></dd></dl>
+<table align="left" style="width:800px">
+<tr>
+<td>Date </td><td>Software Version </td><td>Initials </td><td>Description  </td></tr>
+</table>
+<p><br />
+<br />
+ </p><hr/>
+ 
+</div>
+</div>
+<a id="ae2ad34bdfa19d11f9056db61417ea05b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2ad34bdfa19d11f9056db61417ea05b">&#9670;&nbsp;</a></span>i2c_master_receive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void i2c_master_receive </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *&#160;</td>
+          <td class="paramname"><em>i2c_transfer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><b>Description:</b> </p><pre class="fragment">Initiates a blocking reception in master mode using the parameters specified in transfer
+</pre><p>PRE-CONDITION: i2c_init has been carried out properly PRE-CONDITION: The data buffer points to non-null location and the transfer length is non-zero.</p>
+<p>POST-CONDITION: The data has been received from the slave</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c_transfer</td><td>is a pointer to a struct which contains all the information required to carry out a transfer. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p><b>Example:</b> </p><div class="fragment"><div class="line"><a class="code" href="i2c__interface_8h.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a>(config_table);</div><div class="line"><a class="code" href="structi2c__transfer__t.html">i2c_transfer_t</a> accelerometer_comm;</div><div class="line">accelerometer_comm.<a class="code" href="structi2c__transfer__t.html#add3e500ab7f1fe4dcf53e83a5a908679">channel</a> = I2C_2;</div><div class="line">accelerometer_comm.<a class="code" href="structi2c__transfer__t.html#a56ed84df35de10bdb65e72b184309497">buffer</a> = &amp;data_from_accel;</div><div class="line">accelerometer_comm.length = 2;</div><div class="line">accelerometer_comm.address = ACCELEROMETER_ADDRESS;</div><div class="line"><a class="code" href="i2c__interface_8h.html#a4ab15f0708aa443b4e99f69995605253">i2c_master_transmit</a>(&amp;accelerometer_comm);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411_8c.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#abdf6a4c6c91e23ec00e7e896b905c94f">i2c_master_transmit</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#a0e2a4f5a63d83c6b46c34a93c8d6a645">i2c_slave_transmit</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#a64a634fcf29ab61888a048599f3c4e2f">i2c_slave_receive</a> <br />
+<b> - CHANGE HISTORY - </b></dd></dl>
+<table align="left" style="width:800px">
+<tr>
+<td>Date </td><td>Software Version </td><td>Initials </td><td>Description  </td></tr>
+</table>
+<p><br />
+<br />
+ </p><hr/>
+ 
+</div>
+</div>
+<a id="a4ab15f0708aa443b4e99f69995605253"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ab15f0708aa443b4e99f69995605253">&#9670;&nbsp;</a></span>i2c_master_transmit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void i2c_master_transmit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *&#160;</td>
+          <td class="paramname"><em>i2c_transfer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><b>Description:</b> </p><pre class="fragment">Initiates a blocking transmission in master mode using the parameters specified in transfer
+</pre><p>PRE-CONDITION: i2c_init has been carried out properly PRE-CONDITION: The data buffer points to non-null location and the transfer length is non-zero.</p>
+<p>POST-CONDITION: The data has been sent to the slave</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c_transfer</td><td>is a pointer to a struct which contains all the information required to carry out a transfer. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p><b>Example:</b> </p><div class="fragment"><div class="line"><a class="code" href="i2c__interface_8h.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a>(config_table);</div><div class="line"><a class="code" href="structi2c__transfer__t.html">i2c_transfer_t</a> motor_controller_comm;</div><div class="line">motor_controller_comm.<a class="code" href="structi2c__transfer__t.html#add3e500ab7f1fe4dcf53e83a5a908679">channel</a> = I2C_2;</div><div class="line">motor_controller_comm.<a class="code" href="structi2c__transfer__t.html#a56ed84df35de10bdb65e72b184309497">buffer</a> = &amp;data_to_motor;</div><div class="line">motor_controller_comm.length = 4;</div><div class="line">motor_controller_comm.address = MOTOR_CONTROLLER_ADDRESS;</div><div class="line"><a class="code" href="i2c__interface_8h.html#a4ab15f0708aa443b4e99f69995605253">i2c_master_transmit</a>(&amp;motor_controller_comm);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411_8c.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#ab5a33cd538ed7c44168f864312fca49c">i2c_master_receive</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#a0e2a4f5a63d83c6b46c34a93c8d6a645">i2c_slave_transmit</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#a64a634fcf29ab61888a048599f3c4e2f">i2c_slave_receive</a> <br />
+<b> - CHANGE HISTORY - </b></dd></dl>
+<table align="left" style="width:800px">
+<tr>
+<td>Date </td><td>Software Version </td><td>Initials </td><td>Description  </td></tr>
+</table>
+<p><br />
+<br />
+ </p><hr/>
+ 
+</div>
+</div>
+<a id="aea536ff4387878f6fa1bb58683d81237"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea536ff4387878f6fa1bb58683d81237">&#9670;&nbsp;</a></span>i2c_slave_receive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void i2c_slave_receive </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *&#160;</td>
+          <td class="paramname"><em>i2c_transfer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><b>Description:</b> </p><pre class="fragment">Initiates a blocking reception in master mode using the parameters specified in transfer
+</pre><p>PRE-CONDITION: i2c_init has been carried out properly PRE-CONDITION: The data buffer points to non-null location and the transfer length is non-zero.</p>
+<p>POST-CONDITION: The data has been received from the slave</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c_transfer</td><td>is a pointer to a struct which contains all the information required to carry out a transfer. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p><b>Example:</b> </p><div class="fragment"><div class="line"><a class="code" href="i2c__interface_8h.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a>(config_table);</div><div class="line"><a class="code" href="structi2c__transfer__t.html">i2c_transfer_t</a> accelerometer_comm;</div><div class="line">accelerometer_comm.<a class="code" href="structi2c__transfer__t.html#add3e500ab7f1fe4dcf53e83a5a908679">channel</a> = I2C_2;</div><div class="line">accelerometer_comm.<a class="code" href="structi2c__transfer__t.html#a56ed84df35de10bdb65e72b184309497">buffer</a> = &amp;data_from_accel;</div><div class="line">accelerometer_comm.length = 2;</div><div class="line">accelerometer_comm.address = ACCELEROMETER_ADDRESS;</div><div class="line"><a class="code" href="i2c__interface_8h.html#a4ab15f0708aa443b4e99f69995605253">i2c_master_transmit</a>(&amp;accelerometer_comm);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411_8c.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#abdf6a4c6c91e23ec00e7e896b905c94f">i2c_master_transmit</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#a0e2a4f5a63d83c6b46c34a93c8d6a645">i2c_slave_transmit</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#a64a634fcf29ab61888a048599f3c4e2f">i2c_slave_receive</a> <br />
+<b> - CHANGE HISTORY - </b></dd></dl>
+<table align="left" style="width:800px">
+<tr>
+<td>Date </td><td>Software Version </td><td>Initials </td><td>Description  </td></tr>
+</table>
+<p><br />
+<br />
+ </p><hr/>
+ 
+</div>
+</div>
+<a id="a50b4f70e87b1f4e92d7adb882b56ec59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50b4f70e87b1f4e92d7adb882b56ec59">&#9670;&nbsp;</a></span>i2c_slave_transmit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void i2c_slave_transmit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *&#160;</td>
+          <td class="paramname"><em>i2c_transfer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><b>Description:</b> </p><pre class="fragment">Initiates a blocking transmission in slave mode using the parameters specified in transfer
+</pre><p>PRE-CONDITION: i2c_init has been carried out properly PRE-CONDITION: The data buffer points to non-null location and the transfer length is non-zero.</p>
+<p>POST-CONDITION: The data has been sent to the master</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c_transfer</td><td>is a pointer to a struct which contains all the information required to carry out a transfer. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p><b>Example:</b> </p><div class="fragment"><div class="line"><a class="code" href="i2c__interface_8h.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a>(config_table);</div><div class="line"><a class="code" href="structi2c__transfer__t.html">i2c_transfer_t</a> motor_controller_comm;</div><div class="line">motor_controller_comm.<a class="code" href="structi2c__transfer__t.html#add3e500ab7f1fe4dcf53e83a5a908679">channel</a> = I2C_2;</div><div class="line">motor_controller_comm.<a class="code" href="structi2c__transfer__t.html#a56ed84df35de10bdb65e72b184309497">buffer</a> = &amp;data_to_motor;</div><div class="line">motor_controller_comm.length = 4;</div><div class="line">motor_controller_comm.address = MOTOR_CONTROLLER_ADDRESS;</div><div class="line"><a class="code" href="i2c__interface_8h.html#a4ab15f0708aa443b4e99f69995605253">i2c_master_transmit</a>(&amp;motor_controller_comm);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411_8c.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#abdf6a4c6c91e23ec00e7e896b905c94f">i2c_master_transmit</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#a0e2a4f5a63d83c6b46c34a93c8d6a645">i2c_slave_transmit</a> </dd>
+<dd>
+<a class="el" href="i2c__stm32f411_8c.html#a64a634fcf29ab61888a048599f3c4e2f">i2c_slave_receive</a> <br />
 <b> - CHANGE HISTORY - </b></dd></dl>
 <table align="left" style="width:800px">
 <tr>

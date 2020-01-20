@@ -163,7 +163,13 @@ static void i2c_n_byte_reception(i2c_transfer_t *i2c_transfer);
 *
 *
 * PRE-CONDITION: The config table has been obtained and is non-null
-
+* PRE-CONDITION: The required GPIO pins for i2c combination have been configured
+* 					correctly with gpio_init
+* PRE-CONDITION: The appropriate peripheral clocks have been activated
+*
+* POST-CONDITION: The selected i2c channels have been activated anda ready to be used
+*
+*
 * @return 		void
 *
 * \b Example:
@@ -171,6 +177,7 @@ static void i2c_n_byte_reception(i2c_transfer_t *i2c_transfer);
 *	const i2c_config_t *config_table = i2c_config_get();
 *	i2c_init(config_table);
 * @endcode
+** POST-CONDITION: The appropraite trise value has been calculated and placed in the register
 *
 * @see i2c_config_get
 * <br><b> - CHANGE HISTORY - </b>
@@ -205,6 +212,140 @@ void i2c_init(const i2c_config_t *config_table)
 	}
 }
 
+
+/******************************************************************************
+* Function: i2c_calculate_ccr()
+*//**
+* \b Description:
+*
+* 	Static inline function called from within the driver to carry out the calculation of
+* 	the required pulse length for a given frequency.
+*
+*
+* PRE-CONDITION: The config table has been obtained and is non-null
+*
+* POST-CONDITION: The appropriate cc value has been calculated and placed in the register
+*
+* @return 		uint32_t
+*
+* \b Example:
+* 	Automatically called within i2c_init
+*
+* @see i2c_init
+* @see i2c_calculate_trise
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
+static inline uint32_t i2c_calculate_ccr(i2c_config_t *config_entry)
+{
+	uint32_t calculated_ccr = 0;
+	if (config_entry->fast_or_std == I2C_SM)
+	{
+		assert(config_entry->i2c_op_freq_kHz <= 100);
+		/**
+		 * Equation obtained from RM0383 18.6.8:
+		 * \f$ CCR = \frac{T_{high}}{T_{pclk}}\f$,
+		 * where
+		 * \f$ T_{high} = \frac{1}{2 \times T_{opfreq}} \f$ (kHz)
+		 * and
+		 * \f$ T_{opfreq} = \frac{1}{f_{opfreq}} \f$
+		 * and \f$ T_{pclk} = \frac{1}{f_{pclk}} \f$
+		 * leading to
+		 * \f$ CCR = \frac{f_{pclk} (MHz) }{2 \times f_{opfreq} (khZ)}
+		 * 			= \frac{f_{pclk}}{2000 \times f_{opfreq}} \f$
+		 */
+		calculated_ccr = (config_entry->periph_clk_freq_MHz)/(2000UL*config_entry->i2c_op_freq_kHz);
+	}
+	else if (config_entry->fast_or_std == I2C_FM)
+	{
+		assert(config_entry->i2c_op_freq_kHz <= 400);
+		assert(config_entry->periph_clk_freq_MHz > 0x03);
+		if (config_entry->duty_cycle == FM_MODE_2)
+		{
+			/**
+			 * Equation obtained from RM0383 18.6.8:
+			 * \f$ CCR = \frac{T_{high}}{T_{pclk}}\f$,
+			 * where
+			 * \f$ T_{high} = \frac{1}{3 \times T_{opfreq}} \f$ (kHz)
+			 * and
+			 * \f$ T_{opfreq} = \frac{1}{f_{opfreq}} \f$
+			 * and \f$ T_{pclk} = \frac{1}{f_{pclk}} \f$
+			 * leading to
+			 * \f$ CCR = \frac{f_{pclk} (MHz) }{3 \times f_{opfreq} (khZ)}
+			 * 			= \frac{f_{pclk}}{3000 \times f_{opfreq}} \f$
+			 */
+		calculated_ccr = (config_entry->periph_clk_freq_MHz)/(3000UL*config_entry->i2c_op_freq_kHz);
+		}
+		else if (config_entry->duty_cycle == FM_MODE_16_9)
+		{
+			/**
+			 * Equation obtained from RM0383 18.6.8:
+			 * \f$ CCR = \frac{T_{high}}{T_{pclk}}\f$,
+			 * where
+			 * \f$ T_{high} = \frac{25}{9 \times T_{opfreq}} \f$ (kHz)
+			 * and
+			 * \f$ T_{opfreq} = \frac{1}{f_{opfreq}} \f$
+			 * and \f$ T_{pclk} = \frac{1}{f_{pclk}} \f$
+			 * leading to
+			 * \f$ CCR = \frac{9 \times f_{pclk} (MHz) }{25 \times f_{opfreq} (khZ)}
+			 * 			= \frac{9 \times f_{pclk}}{25000 \times f_{opfreq}} \f$
+			 */
+		calculated_ccr = (9UL*config_entry->periph_clk_freq_MHz)/(25000UL*config_entry->i2c_op_freq_kHz);
+		}
+	}
+	assert(calculated_ccr < (0x02 << 12)); //Check for proper CCR size.
+	return (calculated_ccr);
+}
+
+/******************************************************************************
+* Function: i2c_calculate_trise()
+*//**
+* \b Description:
+*
+* 	Static inline function called from within the driver to carry out the calculation of
+* 	the required rise time
+*
+*
+* PRE-CONDITION: The config table has been obtained and is non-null
+*
+* POST-CONDITION: The appropriate trise value has been calculated and placed in the register
+*
+* @return 		uint32_t
+*
+* \b Example:
+* 	Automatically called within i2c_init
+*
+* @see i2c_init
+* @see i2c_calculate_ccr
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
+static inline uint32_t i2c_calculate_trise(i2c_config_t *config_entry)
+{
+	uint32_t calculated_trise = 0;
+	if (config_entry->fast_or_std == I2C_SM)
+		{
+		//for standard mode, max rise time is 1000 nano seconds. Or a single 1MHz pulse.
+		calculated_trise = config_entry->periph_clk_freq_MHz + 1;
+		}
+	else if (config_entry->fast_or_std == I2C_FM)
+	{
+		//for fast mode, max rise time is 300 nanoseconds, or 3.33MHz
+		calculated_trise = (uint32_t) (config_entry->periph_clk_freq_MHz * 3.33F) + 1;
+	}
+	assert(calculated_trise < (0x02 << 6));
+
+	return (calculated_trise);
+}
+
 /******************************************************************************
 * Function: i2c_interrupt_control()
 *//**
@@ -215,7 +356,9 @@ void i2c_init(const i2c_config_t *config_table)
 *
 *
 * PRE-CONDITION: The i2c_init function has been carried out successfully
-
+*
+* POST-CONDITION: The desired interrupt on the selected device has been activated/disabled
+*
 * @return 		void
 *
 * \b Example:
@@ -248,23 +391,38 @@ void i2c_interrupt_control(i2c_channel_t channel, i2c_interrupt_dma_t interrupt,
 }
 
 /******************************************************************************
-* Function: i2c_calculate_ccr()
+* Function: i2c_master_transmit()
 *//**
 * \b Description:
 *
-* 	Static inline function called from within the driver to carry out the calculation of
-* 	the required pulse length for a given frequency.
+* 	Initiates a blocking transmission in master mode using the parameters specified in transfer
 *
 *
-* PRE-CONDITION: The config table has been obtained and is non-null
-
-* @return 		uint32_t
+* PRE-CONDITION: i2c_init has been carried out properly
+* PRE-CONDITION: The data buffer points to non-null location and the
+* 					transfer length is non-zero.
+*
+* POST-CONDITION: The data has been sent to the slave
+*
+* @param		i2c_transfer is a pointer to a struct which contains all the information
+* 					required to carry out a transfer.
+* @return 		void
 *
 * \b Example:
-* 	Automatically called within i2c_init
+* @code
+* 	i2c_init(config_table);
+* 	i2c_transfer_t motor_controller_comm;
+* 	motor_controller_comm.channel = I2C_2;
+* 	motor_controller_comm.buffer = &data_to_motor;
+* 	motor_controller_comm.length = 4;
+* 	motor_controller_comm.address = MOTOR_CONTROLLER_ADDRESS;
+* 	i2c_master_transmit(&motor_controller_comm);
+* @endcode
 *
 * @see i2c_init
-* @see i2c_calculate_trise
+* @see i2c_master_receive
+* @see i2c_slave_transmit
+* @see i2c_slave_receive
 * <br><b> - CHANGE HISTORY - </b>
 *
 * <table align="left" style="width:800px">
@@ -272,62 +430,6 @@ void i2c_interrupt_control(i2c_channel_t channel, i2c_interrupt_dma_t interrupt,
 * </table><br><br>
 * <hr>
 *******************************************************************************/
-static inline uint32_t i2c_calculate_ccr(i2c_config_t *config_entry)
-{
-	uint32_t calculated_ccr = 0;
-	if (config_entry->fast_or_std == I2C_SM)
-	{
-		//TODO: Use doxygen to formally present equations
-		assert(config_entry->i2c_op_freq_kHz <= 100);
-		/**
-		 * Equation obtained from RM0383 18.6.8:
-		 * \f$ CCR = \frac{T_(high)}{T_pclk}\f$,
-		 * where
-		 * \f$ T_(high) = \frac{1}{2 \times T_(opfreq)} \f$ (kHz)
-		 * and
-		 * \f$ T_(op_freq) = \frac{1}{f_(opfreq)} \f$
-		 * and \f$ T_(pclk) = \frac{1}{f_(pclk)}
-		 * leading to
-		 * \f$ CCR = \frac{f_pclk (MHz) }{2 \times f_(opfreq) (khZ)}
-		 * 			= \frac{f_pclk}{2000 \times f_(opfreq)}
-		 */
-		calculated_ccr = (config_entry->periph_clk_freq_MHz)/(2000UL*config_entry->i2c_op_freq_kHz);
-	}
-	else if (config_entry->fast_or_std == I2C_FM)
-	{
-		assert(config_entry->i2c_op_freq_kHz <= 400);
-		assert(config_entry->periph_clk_freq_MHz > 0x03);
-		if (config_entry->duty_cycle == FM_MODE_2)
-		{
-		calculated_ccr = (config_entry->periph_clk_freq_MHz)/(3000UL*config_entry->i2c_op_freq_kHz);
-		}
-		else if (config_entry->duty_cycle == FM_MODE_16_9)
-		{
-		calculated_ccr = (9UL*config_entry->periph_clk_freq_MHz)/(25000UL*config_entry->i2c_op_freq_kHz);
-		}
-	}
-	assert(calculated_ccr < (0x02 << 12)); //Check for proper CCR size.
-	return (calculated_ccr);
-}
-
-static inline uint32_t i2c_calculate_trise(i2c_config_t *config_entry)
-{
-	uint32_t calculated_trise = 0;
-	if (config_entry->fast_or_std == I2C_SM)
-		{
-		//for standard mode, max rise time is 1000 nano seconds. Or a single 1MHz pulse.
-		calculated_trise = config_entry->periph_clk_freq_MHz + 1;
-		}
-	else if (config_entry->fast_or_std == I2C_FM)
-	{
-		//for fast mode, max rise time is 300 nanoseconds, or 3.33MHz
-		calculated_trise = (uint32_t) (config_entry->periph_clk_freq_MHz * 3.33F) + 1;
-	}
-	assert(calculated_trise < (0x02 << 6));
-
-	return (calculated_trise);
-}
-
 void i2c_master_transmit(i2c_transfer_t *i2c_transfer)
 {
 	uint16_t status_reg = 0;
@@ -367,6 +469,46 @@ void i2c_master_transmit(i2c_transfer_t *i2c_transfer)
 
 }
 
+/******************************************************************************
+* Function: i2c_master_receive()
+*//**
+* \b Description:
+*
+* 	Initiates a blocking reception in master mode using the parameters specified in transfer
+*
+*
+* PRE-CONDITION: i2c_init has been carried out properly
+* PRE-CONDITION: The data buffer points to non-null location and the
+* 					transfer length is non-zero.
+*
+* POST-CONDITION: The data has been received from the slave
+*
+* @param		i2c_transfer is a pointer to a struct which contains all the information
+* 					required to carry out a transfer.
+* @return 		void
+*
+* \b Example:
+* @code
+* 	i2c_init(config_table);
+* 	i2c_transfer_t accelerometer_comm;
+* 	accelerometer_comm.channel = I2C_2;
+* 	accelerometer_comm.buffer = &data_from_accel;
+* 	accelerometer_comm.length = 2;
+* 	accelerometer_comm.address = ACCELEROMETER_ADDRESS;
+* 	i2c_master_transmit(&accelerometer_comm);
+* @endcode
+*
+* @see i2c_init
+* @see i2c_master_transmit
+* @see i2c_slave_transmit
+* @see i2c_slave_receive
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
 void i2c_master_receive(i2c_transfer_t *i2c_transfer)
 {
 	/*
@@ -414,6 +556,46 @@ void i2c_master_receive(i2c_transfer_t *i2c_transfer)
 	}
 }
 
+/******************************************************************************
+* Function: i2c_slave_transmit()
+*//**
+* \b Description:
+*
+* 	Initiates a blocking transmission in slave mode using the parameters specified in transfer
+*
+*
+* PRE-CONDITION: i2c_init has been carried out properly
+* PRE-CONDITION: The data buffer points to non-null location and the
+* 					transfer length is non-zero.
+*
+* POST-CONDITION: The data has been sent to the master
+*
+* @param		i2c_transfer is a pointer to a struct which contains all the information
+* 					required to carry out a transfer.
+* @return 		void
+*
+* \b Example:
+* @code
+* 	i2c_init(config_table);
+* 	i2c_transfer_t motor_controller_comm;
+* 	motor_controller_comm.channel = I2C_2;
+* 	motor_controller_comm.buffer = &data_to_motor;
+* 	motor_controller_comm.length = 4;
+* 	motor_controller_comm.address = MOTOR_CONTROLLER_ADDRESS;
+* 	i2c_master_transmit(&motor_controller_comm);
+* @endcode
+*
+* @see i2c_init
+* @see i2c_master_transmit
+* @see i2c_slave_transmit
+* @see i2c_slave_receive
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
 void i2c_slave_transmit(i2c_transfer_t *i2c_transfer)
 {
   uint32_t status_reg;
@@ -449,6 +631,46 @@ void i2c_slave_transmit(i2c_transfer_t *i2c_transfer)
 
 }
 
+/******************************************************************************
+* Function: i2c_slave_receive()
+*//**
+* \b Description:
+*
+* 	Initiates a blocking reception in master mode using the parameters specified in transfer
+*
+*
+* PRE-CONDITION: i2c_init has been carried out properly
+* PRE-CONDITION: The data buffer points to non-null location and the
+* 					transfer length is non-zero.
+*
+* POST-CONDITION: The data has been received from the slave
+*
+* @param		i2c_transfer is a pointer to a struct which contains all the information
+* 					required to carry out a transfer.
+* @return 		void
+*
+* \b Example:
+* @code
+* 	i2c_init(config_table);
+* 	i2c_transfer_t accelerometer_comm;
+* 	accelerometer_comm.channel = I2C_2;
+* 	accelerometer_comm.buffer = &data_from_accel;
+* 	accelerometer_comm.length = 2;
+* 	accelerometer_comm.address = ACCELEROMETER_ADDRESS;
+* 	i2c_master_transmit(&accelerometer_comm);
+* @endcode
+*
+* @see i2c_init
+* @see i2c_master_transmit
+* @see i2c_slave_transmit
+* @see i2c_slave_receive
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
 void i2c_slave_receive(i2c_transfer_t *i2c_transfer)
 {
 	uint32_t status_reg;
