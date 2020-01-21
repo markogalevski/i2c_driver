@@ -153,8 +153,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a5cb2a59df571ef9e5ab7b5b47896f914"><td class="memItemLeft" align="right" valign="top"><a id="a5cb2a59df571ef9e5ab7b5b47896f914"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_register_write</b> (uint32_t i2c_register)</td></tr>
 <tr class="separator:a5cb2a59df571ef9e5ab7b5b47896f914"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab012febda800d5666017376a54b72758"><td class="memItemLeft" align="right" valign="top"><a id="ab012febda800d5666017376a54b72758"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_register_read</b> (uint32_t i2c_regsister)</td></tr>
+<tr class="memitem:ab012febda800d5666017376a54b72758"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__interface_8h.html#ab012febda800d5666017376a54b72758">i2c_register_read</a> (uint32_t i2c_regsister)</td></tr>
 <tr class="separator:ab012febda800d5666017376a54b72758"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -505,6 +504,46 @@ The rest of the communication is managed by the callback.
 <a class="el" href="i2c__stm32f411_8c.html#a576c5255b45dc9c1bd07389e3245c07c">i2c_slave_receive_it</a> </dd>
 <dd>
 <a class="el" href="i2c__stm32f411_8c.html#ae6559291ec257841b811c45e42c85153">i2c_irq_handler</a> <br />
+<b> - CHANGE HISTORY - </b></dd></dl>
+<table align="left" style="width:800px">
+<tr>
+<td>Date </td><td>Software Version </td><td>Initials </td><td>Description  </td></tr>
+</table>
+<p><br />
+<br />
+ </p><hr/>
+ 
+</div>
+</div>
+<a id="ab012febda800d5666017376a54b72758"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab012febda800d5666017376a54b72758">&#9670;&nbsp;</a></span>i2c_register_read()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t i2c_register_read </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>i2c_register</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><b>Description:</b> </p><pre class="fragment">Read the current value of the register in i2c address space. It is the
+user's own responisibility to consult the RM0383 to ensure that no reserved bits are
+overwritten, etc.
+Intended to be used alongside i2c_register_write() to create composite advanced user functions
+</pre><p>PRE-CONDITION: The address does in fact lie in the address space of any timer.</p>
+<p>POST-CONDITION: The register's current contents are returned</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c_register</td><td>is a uint32_t which is cast as a 16bit address</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>uint16_t timer_register's contents</dd></dl>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">uint32_t cr1_i2c3 = <a class="code" href="i2c__interface_8h.html#ab012febda800d5666017376a54b72758">i2c_register_read</a>(I2C3_BASE + 0x00UL); <span class="comment">//get current value</span></div><div class="line">cr1_i2c3 &amp;= ~(0x01UL &lt;&lt; I2C_CR1_ACK_Pos); <span class="comment">//clear the DMA request on CC3 bit</span></div><div class="line">timer_register_write(I2C3_BASE + 0x00UL, cr1_i2c3);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411_8c.html#a3dbd39a96f4139c47af56876cde582a3">i2c_register_write</a> <br />
 <b> - CHANGE HISTORY - </b></dd></dl>
 <table align="left" style="width:800px">
 <tr>

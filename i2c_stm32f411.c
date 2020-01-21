@@ -1622,5 +1622,91 @@ void i2c_irq_handler(i2c_channel_t channel)
 
 }
 
+/******************************************************************************
+* Function: i2c_register_write()
+*//**
+* \b Description:
+*
+* 	Write the value into the register in i2c address space. It is the
+* 	user's own responisibility to consult the RM0383 to ensure that no reserved bits are
+* 	overwritten, etc.
+* 	Intended to be used alongside i2c_register_read() to create composite advanced user functions
+*
+*
+* PRE-CONDITION: The address does in fact lie in the address space of any timer.
+*
+* POST-CONDITION: The register now contains the value
+*
+*
+* @param		i2c_register is a uint32_t which is cast as a 16bit address
+*
+* @param		value is a 16 bit value
+*
+* \b Example:
+* @code
+*	uint32_t cr1_i2c3 = i2c_register_read(I2C3_BASE + 0x00UL); //get current value
+*	cr1_i2c3 &= ~(0x01UL << I2C_CR1_ACK_Pos); //clear the DMA request on CC3 bit
+*	timer_register_write(I2C3_BASE + 0x00UL, cr1_i2c3);
+*
+* @endcode
+*
+* @see i2c_register_read
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
+void i2c_register_write(uint32_t i2c_register, uint16_t value)
+{
+	assert(i2c_register >= I2C1_BASE && i2c_register < PWR_BASE);
+
+	*((uint16_t *) i2c_register) = value;
+}
+
+/******************************************************************************
+* Function: i2c_register_read()
+*//**
+* \b Description:
+*
+* 	Read the current value of the register in i2c address space. It is the
+* 	user's own responisibility to consult the RM0383 to ensure that no reserved bits are
+* 	overwritten, etc.
+* 	Intended to be used alongside i2c_register_write() to create composite advanced user functions
+*
+*
+* PRE-CONDITION: The address does in fact lie in the address space of any timer.
+*
+* POST-CONDITION: The register's current contents are returned
+*
+*
+* @param		i2c_register is a uint32_t which is cast as a 16bit address
+*
+*
+* @return 		uint16_t timer_register's contents
+*
+* \b Example:
+* @code
+*	uint32_t cr1_i2c3 = i2c_register_read(I2C3_BASE + 0x00UL); //get current value
+*	cr1_i2c3 &= ~(0x01UL << I2C_CR1_ACK_Pos); //clear the DMA request on CC3 bit
+*	timer_register_write(I2C3_BASE + 0x00UL, cr1_i2c3);
+*
+* @endcode
+*
+* @see i2c_register_write
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
+uint16_t i2c_register_read(uint32_t i2c_register)
+{
+	assert(i2c_register >= I2C1_BASE && i2c_register < PWR_BASE);
+
+	return( *((uint16_t *) i2c_register));
+}
 
 

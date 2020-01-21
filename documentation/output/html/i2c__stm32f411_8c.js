@@ -20,6 +20,8 @@ var i2c__stm32f411_8c =
     [ "i2c_master_transmit_it_callback", "i2c__stm32f411_8c.html#abbb56255627d0875c71b42be1ee32b9e", null ],
     [ "i2c_n_byte_reception", "i2c__stm32f411_8c.html#ad5b4eb0b2666497f0907cd93dac3e92c", null ],
     [ "i2c_one_byte_reception", "i2c__stm32f411_8c.html#aa03554ab51ea3714271a25dcadecddf5", null ],
+    [ "i2c_register_read", "i2c__stm32f411_8c.html#a6d846c419f17676bc4e048d95b856b39", null ],
+    [ "i2c_register_write", "i2c__stm32f411_8c.html#a3dbd39a96f4139c47af56876cde582a3", null ],
     [ "i2c_slave_receive", "i2c__stm32f411_8c.html#a64a634fcf29ab61888a048599f3c4e2f", null ],
     [ "i2c_slave_receive_it", "i2c__stm32f411_8c.html#a576c5255b45dc9c1bd07389e3245c07c", null ],
     [ "i2c_slave_receive_it_callback", "i2c__stm32f411_8c.html#ad98166f3711d989a0215d304962d8e86", null ],
