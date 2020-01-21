@@ -40,6 +40,10 @@
 #define SM_RISE_TIME_MAX 1000 /**<Maximum rise time for a stanard mode pulse in ns.*/
 #define FM_RISE_TIME_MAX 300 /**<Maximum rise time for a fast mode pulse in ns.  */
 
+#ifndef NULL
+#define NULL (void *)0
+#endif
+
 /**
  * Array of pointers to the Control Register 1 registers
  */
@@ -148,7 +152,7 @@ static i2c_interrupt_callback_t i2c_interrupt_callbacks[NUM_I2C];
 static uint32_t i2c_calculate_ccr(i2c_config_t *config_entry);
 static uint32_t i2c_calculate_trise(i2c_config_t *config_entry);
 static void i2c_clear_addr_bit(i2c_channel_t channel);
-static void i2c_clear_stopf_bit(i2c_channel_t channel);
+static void i2c_handle_stopf_flag(i2c_channel_t channel);
 static void i2c_one_byte_reception(i2c_transfer_t *i2c_transfer);
 static void i2c_two_byte_reception(i2c_transfer_t *i2c_transfer);
 static void i2c_n_byte_reception(i2c_transfer_t *i2c_transfer);
@@ -347,6 +351,49 @@ static inline uint32_t i2c_calculate_trise(i2c_config_t *config_entry)
 }
 
 /******************************************************************************
+* Function: i2c_control()
+*//**
+* \b Description:
+*
+* 	"Emergency" function used to enable or disable a desired i2c channel.
+* 	I2C channels that have been enabled through the config table are enabled
+* 	automatically after initialisation.
+* 	Mainly used to change configs at runtime.
+*
+*
+* PRE-CONDITION: The i2c_init function has been carried out successfully
+*
+* POST-CONDITION: The desired i2c device has been activated/disabled
+*
+* @return 		void
+*
+* \b Example:
+* @code
+*	i2c_control(I2C_2, I2C_DISABLED);
+* @endcode
+*
+* @see i2c_init
+* @see i2c_interrupt_control
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
+void i2c_control(i2c_channel_t channel, i2c_control_t signal)
+{
+	if (signal == I2C_DISABLED)
+	{
+		*I2C_CR1[channel] &= ~(I2C_CR1_PE_Msk);
+	}
+	else if (signal == I2C_ENABLED)
+	{
+		*I2C_CR1[channel] |= I2C_CR1_PE_Msk;
+	}
+}
+
+/******************************************************************************
 * Function: i2c_interrupt_control()
 *//**
 * \b Description:
@@ -495,7 +542,7 @@ void i2c_master_transmit(i2c_transfer_t *i2c_transfer)
 * 	accelerometer_comm.buffer = &data_from_accel;
 * 	accelerometer_comm.length = 2;
 * 	accelerometer_comm.address = ACCELEROMETER_ADDRESS;
-* 	i2c_master_transmit(&accelerometer_comm);
+* 	i2c_master_receive(&accelerometer_comm);
 * @endcode
 *
 * @see i2c_init
@@ -519,7 +566,7 @@ void i2c_master_receive(i2c_transfer_t *i2c_transfer)
 	 * 3. N > 2; disables ACK upon the last 3 bytes.
 	 */
 	uint16_t status_reg = 0;
-	assert(i2c_transfer->data_length != 0 && i2c_transfer->buffer != 0UL);
+	assert(i2c_transfer->data_length != 0 && i2c_transfer->buffer != NULL);
 
 	*I2C_CR1[i2c_transfer->channel] |= I2C_CR1_ACK_Msk; //assume ack will be used
 	//1. Generate START condition
@@ -568,6 +615,7 @@ void i2c_master_receive(i2c_transfer_t *i2c_transfer)
 * PRE-CONDITION: The data buffer points to non-null location and the
 * 					transfer length is non-zero.
 *
+*
 * POST-CONDITION: The data has been sent to the master
 *
 * @param		i2c_transfer is a pointer to a struct which contains all the information
@@ -581,13 +629,12 @@ void i2c_master_receive(i2c_transfer_t *i2c_transfer)
 * 	motor_controller_comm.channel = I2C_2;
 * 	motor_controller_comm.buffer = &data_to_motor;
 * 	motor_controller_comm.length = 4;
-* 	motor_controller_comm.address = MOTOR_CONTROLLER_ADDRESS;
-* 	i2c_master_transmit(&motor_controller_comm);
+* 	i2c_slave_transmit(&motor_controller_comm);
 * @endcode
 *
 * @see i2c_init
 * @see i2c_master_transmit
-* @see i2c_slave_transmit
+* @see i2c_master_receive
 * @see i2c_slave_receive
 * <br><b> - CHANGE HISTORY - </b>
 *
@@ -643,7 +690,7 @@ void i2c_slave_transmit(i2c_transfer_t *i2c_transfer)
 * PRE-CONDITION: The data buffer points to non-null location and the
 * 					transfer length is non-zero.
 *
-* POST-CONDITION: The data has been received from the slave
+* POST-CONDITION: The data has been received by the master from the slave
 *
 * @param		i2c_transfer is a pointer to a struct which contains all the information
 * 					required to carry out a transfer.
@@ -656,14 +703,13 @@ void i2c_slave_transmit(i2c_transfer_t *i2c_transfer)
 * 	accelerometer_comm.channel = I2C_2;
 * 	accelerometer_comm.buffer = &data_from_accel;
 * 	accelerometer_comm.length = 2;
-* 	accelerometer_comm.address = ACCELEROMETER_ADDRESS;
-* 	i2c_master_transmit(&accelerometer_comm);
+* 	i2c_slave_receive(&accelerometer_comm);
 * @endcode
 *
 * @see i2c_init
 * @see i2c_master_transmit
+* * @see i2c_master_receive
 * @see i2c_slave_transmit
-* @see i2c_slave_receive
 * <br><b> - CHANGE HISTORY - </b>
 *
 * <table align="left" style="width:800px">
@@ -705,11 +751,60 @@ void i2c_slave_receive(i2c_transfer_t *i2c_transfer)
 	do
 		status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_STOPF_Msk;
 	while (status_reg == 0);
-	i2c_clear_stopf_bit(i2c_transfer->channel);
+	i2c_handle_stopf_flag(i2c_transfer->channel);
 	*I2C_CR1[i2c_transfer->channel] &= ~I2C_CR1_ACK_Msk;
 }
 
-
+/******************************************************************************
+* Function: i2c_master_transmit_it_callback()
+*//**
+* \b Description:
+*
+* 	This callback function is mapped to an i2c device through calling the
+* 	master_transmit_it function. The function is then called by i2c_irq_handler
+* 	whenever the i2c generates an interrupt
+*
+*
+* PRE-CONDITION: i2c_init has been carried out properly
+* PRE-CONDITION: The data buffer points to non-null location and the
+* 					transfer length is non-zero.
+*
+* POST-CONDITION: The interrupt has been processed. One or two bytes
+* 					have been sent, or the communication has been halted and
+* 					interrupts disabled.
+* POST-CONDITION: When the communication is over, the function un-maps itself from
+* 					the i2c channel
+*
+* @param		i2c_transfer is a pointer to a struct which contains all the information
+* 					required to carry out a transfer. In this case it points to the
+* 					i2c_interrupt_transfers copy, which is safe from the application layer.
+*
+* @return 		void
+*
+* \b Example:
+* @code
+* 	i2c_init(config_table);
+* 	i2c_transfer_t motor_controller_comm;
+*	....
+* 	i2c_master_transmit_it(&motor_controller_comm);
+*
+* 	....
+* 	//automatically called by
+* 	i2c_irq_handler()
+* @endcode
+*
+* @see i2c_master_transmit_it
+* @see i2c_master_receive_it
+* @see i2c_slave_transmit_it
+* @see i2c_slave_receive_it
+* @see i2c_irq_handler
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
 static void i2c_master_transmit_it_callback(i2c_transfer_t *i2c_transfer)
 {
 	uint32_t status_reg = *I2C_SR1[i2c_transfer->channel];
@@ -733,9 +828,60 @@ static void i2c_master_transmit_it_callback(i2c_transfer_t *i2c_transfer)
 	{
 		*I2C_CR2[i2c_transfer->channel] &= ~(I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
 		*I2C_CR1[i2c_transfer->channel] |= I2C_CR1_STOP_Msk;
+		i2c_interrupt_callbacks[i2c_transfer->channel] = NULL;
 	}
 }
 
+/******************************************************************************
+* Function: i2c_master_receive_it_callback()
+*//**
+* \b Description:
+*
+* 	This callback function is mapped to an i2c device through calling the
+* 	master_receive_it function. The function is then called by i2c_irq_handler
+* 	whenever the i2c generates an interrupt
+*
+*
+* PRE-CONDITION: i2c_init has been carried out properly
+* PRE-CONDITION: The data buffer points to non-null location and the
+* 					transfer length is non-zero.
+*
+* POST-CONDITION: The interrupt has been processed. One or two bytes
+* 					have been received, or the communication has been halted and
+* 					interrupts disabled.
+* POST-CONDITION: When the communication is over, the function un-maps itself from
+* 					the i2c channel
+*
+* @param		i2c_transfer is a pointer to a struct which contains all the information
+* 					required to carry out a transfer. In this case it points to the
+* 					i2c_interrupt_transfers copy, which is safe from the application layer.
+*
+* @return 		void
+*
+* \b Example:
+* @code
+* 	i2c_init(config_table);
+* 	i2c_transfer_t accelerometer_comm;
+*	....
+* 	i2c_master_receive_it(&accelerometer_comm);
+*
+* 	....
+* 	//automatically called by
+* 	i2c_irq_handler()
+* @endcode
+*
+* @see i2c_master_transmit_it
+* @see i2c_master_receive_it
+* @see i2c_slave_transmit_it
+* @see i2c_slave_receive_it
+* @see i2c_irq_handler
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
 static void i2c_master_receive_it_callback(i2c_transfer_t *i2c_transfer)
 {
 	uint32_t status_reg = *I2C_SR1[i2c_transfer->channel];
@@ -780,9 +926,61 @@ static void i2c_master_receive_it_callback(i2c_transfer_t *i2c_transfer)
 		i2c_transfer->buffer++;
 		i2c_transfer->data_length--;
 		*I2C_CR2[i2c_transfer->channel] &= ~(I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
+		i2c_interrupt_callbacks[i2c_transfer->channel] = NULL;
+
 	}
 }
 
+/******************************************************************************
+* Function: i2c_slave_transmit_it_callback()
+*//**
+* \b Description:
+*
+* 	This callback function is mapped to an i2c device through calling the
+* 	slave_transmit_it function. The function is then called by i2c_irq_handler
+* 	whenever the i2c generates an interrupt
+*
+*
+* PRE-CONDITION: i2c_init has been carried out properly
+* PRE-CONDITION: The data buffer points to non-null location and the
+* 					transfer length is non-zero.
+*
+* POST-CONDITION: The interrupt has been processed. One or two bytes
+* 					have been sent, or the communication has been halted and
+* 					interrupts disabled.
+* POST-CONDITION: When the communication is over, the function un-maps itself from
+* 					the i2c channel
+*
+* @param		i2c_transfer is a pointer to a struct which contains all the information
+* 					required to carry out a transfer. In this case it points to the
+* 					i2c_interrupt_transfers copy, which is safe from the application layer.
+*
+* @return 		void
+*
+* \b Example:
+* @code
+* 	i2c_init(config_table);
+* 	i2c_transfer_t accelerometer_comm;
+*	....
+* 	i2c_slave_transmit_it(&accelerometer_comm);
+*
+* 	....
+* 	//automatically called by
+* 	i2c_irq_handler()
+* @endcode
+*
+* @see i2c_master_transmit_it
+* @see i2c_master_receive_it
+* @see i2c_slave_transmit_it
+* @see i2c_slave_receive_it
+* @see i2c_irq_handler
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
 static void i2c_slave_transmit_it_callback(i2c_transfer_t *i2c_transfer)
 {
 	uint32_t status_reg = *I2C_SR1[i2c_transfer->channel];
@@ -807,9 +1005,62 @@ static void i2c_slave_transmit_it_callback(i2c_transfer_t *i2c_transfer)
 		*I2C_CR2[i2c_transfer->channel] &= ~(I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
 		*I2C_SR1[i2c_transfer->channel] &= ~I2C_SR1_AF_Msk;
 		*I2C_CR1[i2c_transfer->channel] &= ~I2C_CR1_ACK_Msk;
+		i2c_interrupt_callbacks[i2c_transfer->channel] = NULL;
+
 	}
 }
 
+/******************************************************************************
+* Function: i2c_slave_receive_it_callback()
+*//**
+* \b Description:
+*
+* 	This callback function is mapped to an i2c device through calling the
+* 	slave_receive_it function. The function is then called by i2c_irq_handler
+* 	whenever the i2c generates an interrupt
+*
+*
+* PRE-CONDITION: i2c_init has been carried out properly
+* PRE-CONDITION: The data buffer points to non-null location and the
+* 					transfer length is non-zero.
+*
+* POST-CONDITION: The interrupt has been processed. One or two bytes
+* 					have been received, or the communication has been halted and
+* 					interrupts disabled.
+* POST-CONDITION: When the communication is over, the function un-maps itself from
+* 					the i2c channel
+*
+*
+* @param		i2c_transfer is a pointer to a struct which contains all the information
+* 					required to carry out a transfer. In this case it points to the
+* 					i2c_interrupt_transfers copy, which is safe from the application layer.
+*
+* @return 		void
+*
+* \b Example:
+* @code
+* 	i2c_init(config_table);
+* 	i2c_transfer_t accelerometer_comm;
+*	....
+* 	i2c_slave_receive_it(&accelerometer_comm);
+*
+* 	....
+* 	//automatically called by
+* 	i2c_irq_handler()
+* @endcode
+*
+* @see i2c_master_transmit_it
+* @see i2c_master_receive_it
+* @see i2c_slave_transmit_it
+* @see i2c_slave_receive_it
+* @see i2c_irq_handler
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
 static void i2c_slave_receive_it_callback(i2c_transfer_t *i2c_transfer)
 {
   uint32_t status_reg = *I2C_SR1[i2c_transfer->channel];
@@ -832,59 +1083,365 @@ static void i2c_slave_receive_it_callback(i2c_transfer_t *i2c_transfer)
   else if (status_reg & I2C_SR1_STOPF_Msk)
   {
 	  *I2C_CR2[i2c_transfer->channel] &= ~(I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
-	  i2c_clear_stopf_bit(i2c_transfer->channel);
+	  i2c_handle_stopf_flag(i2c_transfer->channel);
 	  *I2C_CR1[i2c_transfer->channel] &= ~I2C_CR1_ACK_Msk;
+	  i2c_interrupt_callbacks[i2c_transfer->channel] = NULL;
   }
 }
 
+/******************************************************************************
+* Function: i2c_master_transmit_it()
+*//**
+* \b Description:
+*
+* 	User level function used to initiate an interrupt based transmission.
+* 	Creates a safe (static) copy of the transmission data, maps the appropriate
+* 	callback to the i2c channel, enables interrupts, and sends the slave address.
+* 	The rest of the communication is managed by the callback.
+*
+*
+* PRE-CONDITION: i2c_init has been carried out properly
+* PRE-CONDITION: The data buffer points to non-null location and the
+* 					transfer length is non-zero.
+* PRE-CONDITION: No other interrupt based transmission is currently running on the
+* 					same channel
+*
+* POST-CONDITION: The interrupt transmission is ready to continue upon the next
+* 					interrupt
 
-
-void i2c_master_transmit_it(i2c_transfer_t *i2c_transfer)
+*
+* @param		i2c_transfer is a pointer to a struct which contains all the information
+* 					required to carry out a transfer. In this case it points to the
+* 					i2c_interrupt_transfers copy, which is safe from the application layer.
+*
+* @return 		uint32_t returns 0 if all is good, 1 if another transfer is ongoing.
+*
+* \b Example:
+* @code
+* 	i2c_init(config_table);
+* 	i2c_transfer_t motor_controller_comm;
+*	....
+* 	i2c_master_transmit_it(&motor_controller_comm);
+* @endcode
+*
+* @see i2c_master_transmit_it_callback
+* @see i2c_master_receive_it
+* @see i2c_slave_transmit_it
+* @see i2c_slave_receive_it
+* @see i2c_irq_handler
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
+uint32_t i2c_master_transmit_it(i2c_transfer_t *i2c_transfer)
 {
-	i2c_interrupt_transfers[i2c_transfer->channel] = *i2c_transfer;
-	i2c_interrupt_callbacks[i2c_transfer->channel] = i2c_master_transmit_it_callback;
-	*I2C_CR2[i2c_transfer->channel] |= (I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
-	*I2C_CR1[i2c_transfer->channel] |= I2C_CR1_START_Msk;
-	volatile uint32_t status_reg = *I2C_SR1[i2c_transfer->channel];
-	*I2C_DR[i2c_transfer->channel] = i2c_transfer->slave_address;
+	if (i2c_interrupt_callbacks[i2c_transfer->channel] == NULL)
+	{
+		i2c_interrupt_transfers[i2c_transfer->channel] = *i2c_transfer;
+		i2c_interrupt_callbacks[i2c_transfer->channel] = i2c_master_transmit_it_callback;
+		*I2C_CR2[i2c_transfer->channel] |= (I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
+		*I2C_CR1[i2c_transfer->channel] |= I2C_CR1_START_Msk;
+		volatile uint32_t status_reg = *I2C_SR1[i2c_transfer->channel];
+		*I2C_DR[i2c_transfer->channel] = i2c_transfer->slave_address;
+		return (0);
+	}
+	else
+	{
+		return (1);
+	}
 }
 
-void i2c_master_receive_it(i2c_transfer_t *i2c_transfer)
+/******************************************************************************
+* Function: i2c_master_receive_it()
+*//**
+* \b Description:
+*
+* 	User level function used to initiate an interrupt based reception.
+* 	Creates a safe (static) copy of the transmission data, maps the appropriate
+* 	callback to the i2c channel, enables interrupts, and sends the slave address.
+* 	The rest of the communication is managed by the callback.
+*
+*
+* PRE-CONDITION: i2c_init has been carried out properly
+* PRE-CONDITION: The data buffer points to non-null location and the
+* 					transfer length is non-zero.
+* PRE-CONDITION: No other interrupt based transmission is currently running on the
+* 					same channel
+*
+* POST-CONDITION: The interrupt transmission is ready to continue upon the next
+* 					interrupt
+
+*
+* @param		i2c_transfer is a pointer to a struct which contains all the information
+* 					required to carry out a transfer. In this case it points to the
+* 					i2c_interrupt_transfers copy, which is safe from the application layer.
+*
+* @return 		uint32_t returns 0 if all is good, 1 if another transfer is ongoing.
+*
+* \b Example:
+* @code
+* 	i2c_init(config_table);
+* 	i2c_transfer_t accelerometer_comm;
+*	....
+* 	i2c_master_receive_it(&accelerometer_comm);
+* @endcode
+*
+* @see i2c_master_transmit_it
+* @see i2c_master_receive_it_callback
+* @see i2c_slave_transmit_it
+* @see i2c_slave_receive_it
+* @see i2c_irq_handler
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
+uint32_t i2c_master_receive_it(i2c_transfer_t *i2c_transfer)
 {
-	i2c_interrupt_transfers[i2c_transfer->channel] = *i2c_transfer;
-	i2c_interrupt_callbacks[i2c_transfer->channel] = i2c_master_receive_it_callback;
-	*I2C_CR2[i2c_transfer->channel] |= (I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
-	*I2C_CR1[i2c_transfer->channel] |= I2C_CR1_START_Msk;
-	volatile uint32_t status_reg = *I2C_SR1[i2c_transfer->channel];
-	*I2C_DR[i2c_transfer->channel] = i2c_transfer->slave_address | 0x01;
+	if (i2c_interrupt_callbacks[i2c_transfer->channel] == NULL)
+	{
+		i2c_interrupt_transfers[i2c_transfer->channel] = *i2c_transfer;
+		i2c_interrupt_callbacks[i2c_transfer->channel] = i2c_master_receive_it_callback;
+		*I2C_CR2[i2c_transfer->channel] |= (I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
+		*I2C_CR1[i2c_transfer->channel] |= I2C_CR1_START_Msk;
+		volatile uint32_t status_reg = *I2C_SR1[i2c_transfer->channel];
+		*I2C_DR[i2c_transfer->channel] = i2c_transfer->slave_address | 0x01;
+		return (0);
+	}
+	else
+	{
+		return (1);
+	}
 }
 
-void i2c_slave_transmit_it(i2c_transfer_t *i2c_transfer)
+/******************************************************************************
+* Function: i2c_slave_transmit_it()
+*//**
+* \b Description:
+*
+* 	User level function used to initiate an interrupt based transmission.
+* 	Creates a safe (static) copy of the transmission data, maps the appropriate
+* 	callback to the i2c channel, and enables interrupts.
+* 	The rest of the communication is managed by the callback.
+*
+*
+* PRE-CONDITION: i2c_init has been carried out properly
+* PRE-CONDITION: The data buffer points to non-null location and the
+* 					transfer length is non-zero.
+* PRE-CONDITION: No other interrupt based transmission is currently running on the
+* 					same channel
+*
+* POST-CONDITION: The interrupt transmission is ready to continue upon the next
+* 					interrupt
+
+*
+* @param		i2c_transfer is a pointer to a struct which contains all the information
+* 					required to carry out a transfer. In this case it points to the
+* 					i2c_interrupt_transfers copy, which is safe from the application layer.
+*
+* @return 		uint32_t returns 0 if all is good, 1 if another transfer is ongoing.
+*
+* \b Example:
+* @code
+* 	i2c_init(config_table);
+* 	i2c_transfer_t motor_controller_comm;
+*	....
+* 	i2c_slave_transmit_it(&motor_controller_comm);
+* @endcode
+*
+* @see i2c_master_transmit_it
+* @see i2c_master_receive_it
+* @see i2c_slave_transmit_it_callback
+* @see i2c_slave_receive_it
+* @see i2c_irq_handler
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
+uint32_t i2c_slave_transmit_it(i2c_transfer_t *i2c_transfer)
 {
-	i2c_interrupt_transfers[i2c_transfer->channel] = *i2c_transfer;
-	i2c_interrupt_callbacks[i2c_transfer->channel] = i2c_slave_transmit_it_callback;
-	*I2C_CR2[i2c_transfer->channel] |= (I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
+	if (i2c_interrupt_callbacks[i2c_transfer->channel] == NULL)
+	{
+		i2c_interrupt_transfers[i2c_transfer->channel] = *i2c_transfer;
+		i2c_interrupt_callbacks[i2c_transfer->channel] = i2c_slave_transmit_it_callback;
+		*I2C_CR2[i2c_transfer->channel] |= (I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
+		return (0);
+	}
+	else
+	{
+		return (1);
+	}
 }
 
-void i2c_slave_receive_it(i2c_transfer_t *i2c_transfer)
+/******************************************************************************
+* Function: i2c_slave_receive_it()
+*//**
+* \b Description:
+*
+* 	User level function used to initiate an interrupt based transmission.
+* 	Creates a safe (static) copy of the transmission data, maps the appropriate
+* 	callback to the i2c channel, and enables interrupts.
+* 	The rest of the communication is managed by the callback.
+*
+*
+* PRE-CONDITION: i2c_init has been carried out properly
+* PRE-CONDITION: The data buffer points to non-null location and the
+* 					transfer length is non-zero.
+* PRE-CONDITION: No other interrupt based transmission is currently running on the
+* 					same channel
+*
+* POST-CONDITION: The interrupt transmission is ready to continue upon the next
+* 					interrupt
+
+*
+* @param		i2c_transfer is a pointer to a struct which contains all the information
+* 					required to carry out a transfer. In this case it points to the
+* 					i2c_interrupt_transfers copy, which is safe from the application layer.
+*
+* @return 		uint32_t returns 0 if all is good, 1 if another transfer is ongoing.
+*
+* \b Example:
+* @code
+* 	i2c_init(config_table);
+* 	i2c_transfer_t accelerometer_comm;
+*	....
+* 	i2c_slave_receive_it(&accelerometer_comm);
+* @endcode
+*
+* @see i2c_master_transmit_it
+* @see i2c_master_receive_it
+* @see i2c_slave_transmit_it
+* @see i2c_slave_receive_it_callback
+* @see i2c_irq_handler
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
+uint32_t i2c_slave_receive_it(i2c_transfer_t *i2c_transfer)
 {
-	i2c_interrupt_transfers[i2c_transfer->channel] = *i2c_transfer;
-	i2c_interrupt_callbacks[i2c_transfer->channel] = i2c_slave_receive_it_callback;
-	*I2C_CR2[i2c_transfer->channel] |= (I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
+	if (i2c_interrupt_callbacks[i2c_transfer->channel] == NULL)
+	{
+		i2c_interrupt_transfers[i2c_transfer->channel] = *i2c_transfer;
+		i2c_interrupt_callbacks[i2c_transfer->channel] = i2c_slave_receive_it_callback;
+		*I2C_CR2[i2c_transfer->channel] |= (I2C_CR2_ITEVTEN_Msk | I2C_CR2_ITBUFEN_Msk);
+		return(0);
+	}
+	else
+	{
+		return(1);
+	}
 }
 
+/******************************************************************************
+* Function: i2c_clear_addr_bit()
+*//**
+* \b Description:
+*
+* 	Static function called during transfer functions to clear the address bit
+* 	through a read to the SR1 register.
+*
+* PRE-CONDITION: None
+*
+* POST-CONDITION: The addr bit in SR1 for the appropriate channel has been cleared.
+*
+* @param		channel points to the appropriate i2c channel
+*
+* @return 		void
+*
+* \b Example:
+* @code
+* called automatically by various transmission functions
+* @endcode
+*
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
 static void i2c_clear_addr_bit(i2c_channel_t channel)
 {
 	volatile uint32_t status_reg = *I2C_SR1[channel];
 	status_reg = *I2C_SR2[channel];
 }
 
-static void i2c_clear_stopf_bit(i2c_channel_t channel)
+/******************************************************************************
+* Function: i2c_handle_stopf_flag()
+*//**
+* \b Description:
+*
+* 	Static function called during transfer functions to clear the stopf bit
+* 	through a read to the SR1 register, and then initiating a stop.
+*
+* PRE-CONDITION: None
+*
+* POST-CONDITION: The stopf bit in SR1 for the appropriate channel has been cleared,
+* 					and the communication stopped with a write to CR1
+*
+* @param		channel points to the appropriate i2c channel
+*
+* @return 		void
+*
+* \b Example:
+* @code
+* called automatically by various transmission functions
+* @endcode
+*
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
+static void i2c_handle_stopf_flag(i2c_channel_t channel)
 {
 	volatile uint32_t status_reg = *I2C_SR1[channel];
 	*I2C_CR1[channel] |= I2C_CR1_STOP_Msk;
 }
 
+/******************************************************************************
+* Function: i2c_one_byte_reception()
+*//**
+* \b Description:
+*
+* 	Static function called during transfer functions to handle the reception
+* 	of single bytes, as per RM 00383 18.3.3
+*
+* PRE-CONDITION: None
+*
+* POST-CONDITION: The ACK has been disabled, ADDR bit cleared,
+* 					the byte has been received, STOP has been set.
+*
+* @param		i2c_transfer contains all the information required to carry
+* 				out any kind of transfer
+*
+* @return 		void
+*
+* \b Example:
+* @code
+* called automatically by blocking reception functions
+* @endcode
+*
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
 static void i2c_one_byte_reception(i2c_transfer_t *i2c_transfer)
 {
 	uint32_t status_reg;
@@ -900,6 +1457,37 @@ static void i2c_one_byte_reception(i2c_transfer_t *i2c_transfer)
 	i2c_transfer->data_length--;
 }
 
+/******************************************************************************
+* Function: i2c_two_byte_reception()
+*//**
+* \b Description:
+*
+* 	Static function called during transfer functions to handle the reception
+* 	of two bytes, as per RM 00383 18.3.3
+*
+* PRE-CONDITION: None
+*
+* POST-CONDITION: The ACK has been disabled, the POS bit is set,
+* 					ADDR bit cleared, the bytes have been received,
+* 					STOP has been set.
+*
+* @param		i2c_transfer contains all the information required to carry
+* 				out any kind of transfer
+*
+* @return 		void
+*
+* \b Example:
+* @code
+* called automatically by blocking reception functions
+* @endcode
+*
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
 static void i2c_two_byte_reception(i2c_transfer_t *i2c_transfer)
 {
 	uint32_t status_reg;
@@ -919,6 +1507,36 @@ static void i2c_two_byte_reception(i2c_transfer_t *i2c_transfer)
 	i2c_transfer->data_length--;
 }
 
+/******************************************************************************
+* Function: i2c_n_byte_reception()
+*//**
+* \b Description:
+*
+* 	Static function called during transfer functions to handle the reception
+* 	of n bytes, as per RM 00383 18.3.3
+*
+* PRE-CONDITION: None
+*
+* POST-CONDITION: The ACK has been disabled, ADDR bit cleared,
+* 					the bytes have been received, STOP has been set.
+*
+* @param		i2c_transfer contains all the information required to carry
+* 				out any kind of transfer
+*
+* @return 		void
+*
+* \b Example:
+* @code
+* called automatically by blocking reception functions
+* @endcode
+*
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
 static void i2c_n_byte_reception(i2c_transfer_t *i2c_transfer)
 {
   uint32_t status_reg;
@@ -963,6 +1581,39 @@ static void i2c_n_byte_reception(i2c_transfer_t *i2c_transfer)
   	i2c_transfer->data_length--;
 }
 
+/******************************************************************************
+* Function: i2c_irq_handler()
+*//**
+* \b Description:
+*
+* 	User level function, to be placed within IRQ handlers at the main.c level.
+* 	When called, it checks callback table for the appropriate i2c. If it isn't
+* 	null, it feeds a pointer to the appropriate transfer to said callback.
+*
+* PRE-CONDITION: None
+*
+* POST-CONDITION: The previously mapped callback has been called.
+*
+* @param		channel refers to any i2c device on chip
+*
+* @return 		void
+*
+* \b Example:
+* @code
+* called automatically within IRQ handlers, e.g.
+* I2C1_EV_IRQHandler(void)
+* {
+* 	i2c_irq_handler(I2C_1);
+* }
+* @endcode
+*
+* <br><b> - CHANGE HISTORY - </b>
+*
+* <table align="left" style="width:800px">
+* <tr><td> Date       </td><td> Software Version </td><td> Initials </td><td> Description </td></tr>
+* </table><br><br>
+* <hr>
+*******************************************************************************/
 void i2c_irq_handler(i2c_channel_t channel)
 {
 	i2c_transfer_t *transfer = &i2c_interrupt_transfers[channel];

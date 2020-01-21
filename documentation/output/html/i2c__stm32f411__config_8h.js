@@ -13,9 +13,9 @@ var i2c__stm32f411__config_8h =
       [ "I2C_3", "i2c__stm32f411__config_8h.html#aeb977d39938deb53aac8a92cd93794cbaa119b33d35f79b6989be7b30d191eff8", null ],
       [ "NUM_I2C", "i2c__stm32f411__config_8h.html#aeb977d39938deb53aac8a92cd93794cbafd74d406975455503f80bb53926f67a0", null ]
     ] ],
-    [ "i2c_enabled_t", "i2c__stm32f411__config_8h.html#a560af71171eca5e36b8189d884edb6cf", [
-      [ "I2C_DISABLED", "i2c__stm32f411__config_8h.html#a560af71171eca5e36b8189d884edb6cfa3b940b9968b841e3290b3cd824afb922", null ],
-      [ "I2C_ENABLED", "i2c__stm32f411__config_8h.html#a560af71171eca5e36b8189d884edb6cfa75a28e58a3fbd6931ce84e0eca08fd37", null ]
+    [ "i2c_control_t", "i2c__stm32f411__config_8h.html#a959f71dc73216bb24a1640a4ea619522", [
+      [ "I2C_DISABLED", "i2c__stm32f411__config_8h.html#a959f71dc73216bb24a1640a4ea619522a3b940b9968b841e3290b3cd824afb922", null ],
+      [ "I2C_ENABLED", "i2c__stm32f411__config_8h.html#a959f71dc73216bb24a1640a4ea619522a75a28e58a3fbd6931ce84e0eca08fd37", null ]
     ] ],
     [ "i2c_fast_slow_t", "i2c__stm32f411__config_8h.html#a44cba57aedb312d615b0f638871ef72e", [
       [ "I2C_SM", "i2c__stm32f411__config_8h.html#a44cba57aedb312d615b0f638871ef72ea6eea39a9dd2939db1ddc926255080f46", null ],

@@ -118,12 +118,22 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>i2c_channel_t
 : <a class="el" href="i2c__stm32f411__config_8h.html#aeb977d39938deb53aac8a92cd93794cb">i2c_stm32f411_config.h</a>
 </li>
+<li>i2c_clear_addr_bit()
+: <a class="el" href="i2c__stm32f411_8c.html#a894fbc905a328b73d55e3b5643e7324d">i2c_stm32f411.c</a>
+</li>
 <li>i2c_config_get()
 : <a class="el" href="i2c__stm32f411__config_8c.html#a7215d8e7ecb63929b0f5c732b8ce686b">i2c_stm32f411_config.c</a>
 , <a class="el" href="i2c__stm32f411__config_8h.html#a7215d8e7ecb63929b0f5c732b8ce686b">i2c_stm32f411_config.h</a>
 </li>
 <li>i2c_config_table
 : <a class="el" href="i2c__stm32f411__config_8c.html#a0709da477c388adb71b5778e232bdb2d">i2c_stm32f411_config.c</a>
+</li>
+<li>i2c_control()
+: <a class="el" href="i2c__interface_8h.html#afd1602f0a37ccc427f89dfa44faef7bc">i2c_interface.h</a>
+, <a class="el" href="i2c__stm32f411_8c.html#afd1602f0a37ccc427f89dfa44faef7bc">i2c_stm32f411.c</a>
+</li>
+<li>i2c_control_t
+: <a class="el" href="i2c__stm32f411__config_8h.html#a959f71dc73216bb24a1640a4ea619522">i2c_stm32f411_config.h</a>
 </li>
 <li>I2C_CR1
 : <a class="el" href="i2c__stm32f411_8c.html#ad4cbdd967770854672b08821470393b8">i2c_stm32f411.c</a>
@@ -133,9 +143,6 @@ $(document).ready(function(){initNavTree('globals.html','');});
 </li>
 <li>I2C_DR
 : <a class="el" href="i2c__stm32f411_8c.html#a1d487bd1deb18aca4d48d8856cc737e3">i2c_stm32f411.c</a>
-</li>
-<li>i2c_enabled_t
-: <a class="el" href="i2c__stm32f411__config_8h.html#a560af71171eca5e36b8189d884edb6cf">i2c_stm32f411_config.h</a>
 </li>
 <li>i2c_fast_slow_t
 : <a class="el" href="i2c__stm32f411__config_8h.html#a44cba57aedb312d615b0f638871ef72e">i2c_stm32f411_config.h</a>
@@ -148,6 +155,9 @@ $(document).ready(function(){initNavTree('globals.html','');});
 </li>
 <li>i2c_fm_duty_cycle_t
 : <a class="el" href="i2c__stm32f411__config_8h.html#adf0606cd4ff20e02de1e8ef11041e1e3">i2c_stm32f411_config.h</a>
+</li>
+<li>i2c_handle_stopf_flag()
+: <a class="el" href="i2c__stm32f411_8c.html#a632eed810578f466e6173150d4246dd7">i2c_stm32f411.c</a>
 </li>
 <li>i2c_init()
 : <a class="el" href="i2c__interface_8h.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_interface.h</a>
@@ -169,13 +179,34 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>i2c_interrupt_transfers
 : <a class="el" href="i2c__stm32f411_8c.html#a7c8102c884dc7bb481c588dbd331dbee">i2c_stm32f411.c</a>
 </li>
+<li>i2c_irq_handler()
+: <a class="el" href="i2c__interface_8h.html#ae6559291ec257841b811c45e42c85153">i2c_interface.h</a>
+, <a class="el" href="i2c__stm32f411_8c.html#ae6559291ec257841b811c45e42c85153">i2c_stm32f411.c</a>
+</li>
 <li>i2c_master_receive()
 : <a class="el" href="i2c__interface_8h.html#ae2ad34bdfa19d11f9056db61417ea05b">i2c_interface.h</a>
 , <a class="el" href="i2c__stm32f411_8c.html#ab5a33cd538ed7c44168f864312fca49c">i2c_stm32f411.c</a>
 </li>
+<li>i2c_master_receive_it()
+: <a class="el" href="i2c__interface_8h.html#a5e28f0b37db51f78c1cf094e5b28aa5b">i2c_interface.h</a>
+, <a class="el" href="i2c__stm32f411_8c.html#aba34d5090a41e7433c380cc8c844f3c1">i2c_stm32f411.c</a>
+</li>
+<li>i2c_master_receive_it_callback()
+: <a class="el" href="i2c__stm32f411_8c.html#a79c51d3103b4d3b6d092498b45b0d827">i2c_stm32f411.c</a>
+</li>
 <li>i2c_master_transmit()
 : <a class="el" href="i2c__interface_8h.html#a4ab15f0708aa443b4e99f69995605253">i2c_interface.h</a>
 , <a class="el" href="i2c__stm32f411_8c.html#abdf6a4c6c91e23ec00e7e896b905c94f">i2c_stm32f411.c</a>
+</li>
+<li>i2c_master_transmit_it()
+: <a class="el" href="i2c__interface_8h.html#ae0e2cc8143498c370d796cd19ddf8941">i2c_interface.h</a>
+, <a class="el" href="i2c__stm32f411_8c.html#a8a0548d22e68adddf2ab34e343c6ced5">i2c_stm32f411.c</a>
+</li>
+<li>i2c_master_transmit_it_callback()
+: <a class="el" href="i2c__stm32f411_8c.html#abbb56255627d0875c71b42be1ee32b9e">i2c_stm32f411.c</a>
+</li>
+<li>i2c_n_byte_reception()
+: <a class="el" href="i2c__stm32f411_8c.html#ad5b4eb0b2666497f0907cd93dac3e92c">i2c_stm32f411.c</a>
 </li>
 <li>I2C_OAR1
 : <a class="el" href="i2c__stm32f411_8c.html#aa75ae25a4c129cfc1b3820c487f7b993">i2c_stm32f411.c</a>
@@ -183,13 +214,30 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>I2C_OAR2
 : <a class="el" href="i2c__stm32f411_8c.html#ace2e83248de2495da3f42bdc368b855f">i2c_stm32f411.c</a>
 </li>
+<li>i2c_one_byte_reception()
+: <a class="el" href="i2c__stm32f411_8c.html#aa03554ab51ea3714271a25dcadecddf5">i2c_stm32f411.c</a>
+</li>
 <li>i2c_slave_receive()
 : <a class="el" href="i2c__interface_8h.html#aea536ff4387878f6fa1bb58683d81237">i2c_interface.h</a>
 , <a class="el" href="i2c__stm32f411_8c.html#a64a634fcf29ab61888a048599f3c4e2f">i2c_stm32f411.c</a>
 </li>
+<li>i2c_slave_receive_it()
+: <a class="el" href="i2c__interface_8h.html#af078f7e9438e5ba3b744bfb8a3fb1e75">i2c_interface.h</a>
+, <a class="el" href="i2c__stm32f411_8c.html#a576c5255b45dc9c1bd07389e3245c07c">i2c_stm32f411.c</a>
+</li>
+<li>i2c_slave_receive_it_callback()
+: <a class="el" href="i2c__stm32f411_8c.html#ad98166f3711d989a0215d304962d8e86">i2c_stm32f411.c</a>
+</li>
 <li>i2c_slave_transmit()
 : <a class="el" href="i2c__interface_8h.html#a50b4f70e87b1f4e92d7adb882b56ec59">i2c_interface.h</a>
 , <a class="el" href="i2c__stm32f411_8c.html#a0e2a4f5a63d83c6b46c34a93c8d6a645">i2c_stm32f411.c</a>
+</li>
+<li>i2c_slave_transmit_it()
+: <a class="el" href="i2c__interface_8h.html#a3d3e9567e558d95f62c06ba35a4ce678">i2c_interface.h</a>
+, <a class="el" href="i2c__stm32f411_8c.html#a421c7b85d07db30de950c2610ab61ac3">i2c_stm32f411.c</a>
+</li>
+<li>i2c_slave_transmit_it_callback()
+: <a class="el" href="i2c__stm32f411_8c.html#a2b57637e122f67b99ef82bc3f061b338">i2c_stm32f411.c</a>
 </li>
 <li>I2C_SM
 : <a class="el" href="i2c__stm32f411__config_8h.html#a44cba57aedb312d615b0f638871ef72ea6eea39a9dd2939db1ddc926255080f46">i2c_stm32f411_config.h</a>
@@ -202,6 +250,9 @@ $(document).ready(function(){initNavTree('globals.html','');});
 </li>
 <li>I2C_TRISE
 : <a class="el" href="i2c__stm32f411_8c.html#aee7de5bd8fbebf1dea6af907135b7b90">i2c_stm32f411.c</a>
+</li>
+<li>i2c_two_byte_reception()
+: <a class="el" href="i2c__stm32f411_8c.html#ac02b756cb1e31fccfb2e232443c13e6d">i2c_stm32f411.c</a>
 </li>
 <li>IT_BUF
 : <a class="el" href="i2c__stm32f411__config_8h.html#affa3a97ca06b5286062d75601e478faba99fa7f9ecd397e8f287d6638e3a6c5c7">i2c_stm32f411_config.h</a>

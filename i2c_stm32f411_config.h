@@ -51,7 +51,7 @@ typedef enum
 {
 	I2C_DISABLED,
 	I2C_ENABLED
-}i2c_enabled_t;
+}i2c_control_t;
 
 /**
  * Options which decided whether the I2C returns an ACK pulse upon data
@@ -109,7 +109,7 @@ typedef enum
  */
 typedef struct
 {
-  i2c_enabled_t en; 				/**<Whether the device is enabled or not*/
+  i2c_control_t en; 				/**<Whether the device is enabled or not*/
   i2c_ack_en_t ack_en;				/**<Whether the device sends ACK upon byte reception*/
   uint32_t periph_clk_freq_MHz;		/**<The frequency of the device in MHz*/
   uint32_t i2c_op_freq_kHz;			/**<The operational frequency of the I2C bus*/

@@ -49,6 +49,8 @@ typedef struct
   uint8_t slave_address;	/**<The 7-bit slave address */
 } i2c_transfer_t;
 
+
+
 typedef enum
 {
 	INTERRUPT_DISABLED,
@@ -57,16 +59,17 @@ typedef enum
 
 void i2c_init(const i2c_config_t *config_table);
 void i2c_irq_handler(i2c_channel_t channel);
+void i2c_control(i2c_channel_t channel, i2c_control_t signal);
 void i2c_interrupt_control(i2c_channel_t channel, i2c_interrupt_dma_t interrupt, i2c_interrupt_control_t signal);
 
 void i2c_master_transmit(i2c_transfer_t *transfer);
 void i2c_master_receive(i2c_transfer_t *transfer);
 void i2c_slave_transmit(i2c_transfer_t *transfer);
 void i2c_slave_receive(i2c_transfer_t *transfer);
-void i2c_master_transmit_it(i2c_transfer_t *transfer);
-void i2c_master_receive_it(i2c_transfer_t *transfer);
-void i2c_slave_transmit_it(i2c_transfer_t *transfer);
-void i2c_slave_receive_it(i2c_transfer_t *transfer);
+uint32_t i2c_master_transmit_it(i2c_transfer_t *transfer);
+uint32_t i2c_master_receive_it(i2c_transfer_t *transfer);
+uint32_t i2c_slave_transmit_it(i2c_transfer_t *transfer);
+uint32_t i2c_slave_receive_it(i2c_transfer_t *transfer);
 
 void i2c_register_write(uint32_t i2c_register);
 uint32_t i2c_register_read(uint32_t i2c_regsister);
