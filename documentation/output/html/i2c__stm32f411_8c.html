@@ -497,8 +497,7 @@ in the config table
 </pre><p>PRE-CONDITION: The config table has been obtained and is non-null PRE-CONDITION: The required GPIO pins for i2c combination have been configured correctly with gpio_init PRE-CONDITION: The appropriate peripheral clocks have been activated</p>
 <p>POST-CONDITION: The selected i2c channels have been activated anda ready to be used</p>
 <dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
-<p><b>Example:</b> </p><div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code" href="structi2c__config__t.html">i2c_config_t</a> *config_table = <a class="code" href="i2c__stm32f411__config_8c.html#a7215d8e7ecb63929b0f5c732b8ce686b">i2c_config_get</a>();</div><div class="line"><a class="code" href="i2c__interface_8h.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a>(config_table);</div></div><!-- fragment --><p> POST-CONDITION: The appropraite trise value has been calculated and placed in the register</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411__config_8h.html#a7215d8e7ecb63929b0f5c732b8ce686b">i2c_config_get</a> <br />
+<p><b>Example:</b> </p><div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code" href="structi2c__config__t.html">i2c_config_t</a> *config_table = <a class="code" href="i2c__stm32f411__config_8c.html#a7215d8e7ecb63929b0f5c732b8ce686b">i2c_config_get</a>();</div><div class="line"><a class="code" href="i2c__interface_8h.html#a7dd55df51c5f66cfb45d6992dfa2ee81">i2c_init</a>(config_table);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411__config_8h.html#a7215d8e7ecb63929b0f5c732b8ce686b">i2c_config_get</a> <br />
 <b> - CHANGE HISTORY - </b></dd></dl>
 <table align="left" style="width:800px">
 <tr>

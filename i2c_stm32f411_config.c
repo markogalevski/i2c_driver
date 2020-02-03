@@ -4,8 +4,8 @@
 * Author                :   Marko Galevski
 * Origin Date           :   20/01/2020
 * Version               :   1.0.0
-* Compiler              :   None
-* Target                :   None
+* Compiler              :   gcc
+* Target                :   STM32F411 (ARM Cortex M4)
 * Notes                 :   None
 *
 *

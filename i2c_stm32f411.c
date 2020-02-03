@@ -181,7 +181,6 @@ static void i2c_n_byte_reception(i2c_transfer_t *i2c_transfer);
 *	const i2c_config_t *config_table = i2c_config_get();
 *	i2c_init(config_table);
 * @endcode
-** POST-CONDITION: The appropraite trise value has been calculated and placed in the register
 *
 * @see i2c_config_get
 * <br><b> - CHANGE HISTORY - </b>
