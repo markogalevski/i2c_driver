@@ -58,7 +58,9 @@ typedef struct
 } i2c_transfer_t;
 
 
-
+/**<
+ * Enumeration which contains on/off switches for i2c interrupts
+ */
 typedef enum
 {
 	INTERRUPT_DISABLED,

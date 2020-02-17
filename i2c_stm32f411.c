@@ -40,6 +40,9 @@
 #define SM_RISE_TIME_MAX 1000 /**<Maximum rise time for a stanard mode pulse in ns.*/
 #define FM_RISE_TIME_MAX 300 /**<Maximum rise time for a fast mode pulse in ns.  */
 
+/**<
+ * NULL definition in case stdlib.h isn't included already
+ */
 #ifndef NULL
 #define NULL (void *)0
 #endif
