@@ -35,7 +35,15 @@
 #ifndef _I2C_H
 #define _I2C_H
 #include "i2c_stm32f411_config.h"
+#include "systick_interface.h" /**< The Systick functionality is required for managing timeouts. Failure
+ 	 	 	 	 	 	 	 	 	 to implement or init the systick properly will not break, but rather simply
+ 	 	 	 	 	 	 	 	 	 never time out*/
 #include <stdint.h>
+
+/**<
+ * Timeout definition to prevent lockup upon faulty transmission/errors
+ */
+#define TIMEOUT_MS 100
 
 /**
  * Generic transfer structure, independent of implementation. Passed into transmission
@@ -71,8 +79,8 @@ uint32_t i2c_master_receive_it(i2c_transfer_t *transfer);
 uint32_t i2c_slave_transmit_it(i2c_transfer_t *transfer);
 uint32_t i2c_slave_receive_it(i2c_transfer_t *transfer);
 
-void i2c_register_write(uint32_t i2c_register);
-uint32_t i2c_register_read(uint32_t i2c_regsister);
+void i2c_register_write(uint32_t i2c_register, uint16_t value);
+uint16_t i2c_register_read(uint32_t i2c_regsister);
 
 
 

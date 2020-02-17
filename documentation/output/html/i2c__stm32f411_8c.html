@@ -100,7 +100,7 @@ Include dependency graph for i2c_stm32f411.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="i2c__stm32f411_8c__incl.png" border="0" usemap="#_2home_2marko_2_documents_2embedded__workspace_2i2c__driver_2i2c__stm32f411_8c" alt=""/></div>
 <map name="_2home_2marko_2_documents_2embedded__workspace_2i2c__driver_2i2c__stm32f411_8c" id="_2home_2marko_2_documents_2embedded__workspace_2i2c__driver_2i2c__stm32f411_8c">
-<area shape="rect" id="node2" href="i2c__interface_8h.html" title="General interface covering user accesses to the i2c communication bus. " alt="" coords="91,109,197,136"/>
+<area shape="rect" id="node2" href="i2c__interface_8h.html" title="General interface covering user accesses to the i2c communication bus. " alt="" coords="149,109,256,136"/>
 <area shape="rect" id="node3" href="i2c__stm32f411__config_8h.html" title="Contains the definitions and structures required to configure the i2c peripherals on an stm32f411..." alt="" coords="5,184,165,211"/>
 </map>
 </div>
@@ -1016,7 +1016,7 @@ Intended to be used alongside i2c_register_write() to create composite advanced 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>uint16_t timer_register's contents</dd></dl>
-<p><b>Example:</b> </p><div class="fragment"><div class="line">uint32_t cr1_i2c3 = <a class="code" href="i2c__interface_8h.html#ab012febda800d5666017376a54b72758">i2c_register_read</a>(I2C3_BASE + 0x00UL); <span class="comment">//get current value</span></div><div class="line">cr1_i2c3 &amp;= ~(0x01UL &lt;&lt; I2C_CR1_ACK_Pos); <span class="comment">//clear the DMA request on CC3 bit</span></div><div class="line">timer_register_write(I2C3_BASE + 0x00UL, cr1_i2c3);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411_8c.html#a3dbd39a96f4139c47af56876cde582a3">i2c_register_write</a> <br />
+<p><b>Example:</b> </p><div class="fragment"><div class="line">uint32_t cr1_i2c3 = <a class="code" href="i2c__interface_8h.html#ae4a6bf3e99f72a423a4db808da712203">i2c_register_read</a>(I2C3_BASE + 0x00UL); <span class="comment">//get current value</span></div><div class="line">cr1_i2c3 &amp;= ~(0x01UL &lt;&lt; I2C_CR1_ACK_Pos); <span class="comment">//clear the DMA request on CC3 bit</span></div><div class="line">timer_register_write(I2C3_BASE + 0x00UL, cr1_i2c3);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411_8c.html#a3dbd39a96f4139c47af56876cde582a3">i2c_register_write</a> <br />
 <b> - CHANGE HISTORY - </b></dd></dl>
 <table align="left" style="width:800px">
 <tr>
@@ -1066,7 +1066,7 @@ Intended to be used alongside i2c_register_read() to create composite advanced u
   </table>
   </dd>
 </dl>
-<p><b>Example:</b> </p><div class="fragment"><div class="line">uint32_t cr1_i2c3 = <a class="code" href="i2c__interface_8h.html#ab012febda800d5666017376a54b72758">i2c_register_read</a>(I2C3_BASE + 0x00UL); <span class="comment">//get current value</span></div><div class="line">cr1_i2c3 &amp;= ~(0x01UL &lt;&lt; I2C_CR1_ACK_Pos); <span class="comment">//clear the DMA request on CC3 bit</span></div><div class="line">timer_register_write(I2C3_BASE + 0x00UL, cr1_i2c3);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411_8c.html#a6d846c419f17676bc4e048d95b856b39">i2c_register_read</a> <br />
+<p><b>Example:</b> </p><div class="fragment"><div class="line">uint32_t cr1_i2c3 = <a class="code" href="i2c__interface_8h.html#ae4a6bf3e99f72a423a4db808da712203">i2c_register_read</a>(I2C3_BASE + 0x00UL); <span class="comment">//get current value</span></div><div class="line">cr1_i2c3 &amp;= ~(0x01UL &lt;&lt; I2C_CR1_ACK_Pos); <span class="comment">//clear the DMA request on CC3 bit</span></div><div class="line">timer_register_write(I2C3_BASE + 0x00UL, cr1_i2c3);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411_8c.html#a6d846c419f17676bc4e048d95b856b39">i2c_register_read</a> <br />
 <b> - CHANGE HISTORY - </b></dd></dl>
 <table align="left" style="width:800px">
 <tr>

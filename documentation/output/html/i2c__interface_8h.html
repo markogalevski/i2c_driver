@@ -82,6 +82,7 @@ $(document).ready(function(){initNavTree('i2c__interface_8h.html','');});
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -92,6 +93,7 @@ $(document).ready(function(){initNavTree('i2c__interface_8h.html','');});
 <p>General interface covering user accesses to the i2c communication bus.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="i2c__stm32f411__config_8h_source.html">i2c_stm32f411_config.h</a>&quot;</code><br />
+<code>#include &quot;systick_interface.h&quot;</code><br />
 <code>#include &lt;stdint.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for i2c_interface.h:</div>
@@ -116,6 +118,11 @@ This graph shows which files directly or indirectly include this file:</div>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a53bb6ce0dbc843daa4ad914d78713ac2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__interface_8h.html#a53bb6ce0dbc843daa4ad914d78713ac2">TIMEOUT_MS</a>&#160;&#160;&#160;100</td></tr>
+<tr class="separator:a53bb6ce0dbc843daa4ad914d78713ac2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -150,15 +157,30 @@ Functions</h2></td></tr>
 <tr class="separator:a3d3e9567e558d95f62c06ba35a4ce678"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af078f7e9438e5ba3b744bfb8a3fb1e75"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__interface_8h.html#af078f7e9438e5ba3b744bfb8a3fb1e75">i2c_slave_receive_it</a> (<a class="el" href="structi2c__transfer__t.html">i2c_transfer_t</a> *transfer)</td></tr>
 <tr class="separator:af078f7e9438e5ba3b744bfb8a3fb1e75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5cb2a59df571ef9e5ab7b5b47896f914"><td class="memItemLeft" align="right" valign="top"><a id="a5cb2a59df571ef9e5ab7b5b47896f914"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>i2c_register_write</b> (uint32_t i2c_register)</td></tr>
-<tr class="separator:a5cb2a59df571ef9e5ab7b5b47896f914"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab012febda800d5666017376a54b72758"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__interface_8h.html#ab012febda800d5666017376a54b72758">i2c_register_read</a> (uint32_t i2c_regsister)</td></tr>
-<tr class="separator:ab012febda800d5666017376a54b72758"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3dbd39a96f4139c47af56876cde582a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__interface_8h.html#a3dbd39a96f4139c47af56876cde582a3">i2c_register_write</a> (uint32_t i2c_register, uint16_t value)</td></tr>
+<tr class="separator:a3dbd39a96f4139c47af56876cde582a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4a6bf3e99f72a423a4db808da712203"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="i2c__interface_8h.html#ae4a6bf3e99f72a423a4db808da712203">i2c_register_read</a> (uint32_t i2c_regsister)</td></tr>
+<tr class="separator:ae4a6bf3e99f72a423a4db808da712203"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>General interface covering user accesses to the i2c communication bus. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a53bb6ce0dbc843daa4ad914d78713ac2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53bb6ce0dbc843daa4ad914d78713ac2">&#9670;&nbsp;</a></span>TIMEOUT_MS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TIMEOUT_MS&#160;&#160;&#160;100</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>&lt; The Systick functionality is required for managing timeouts. Failure to implement or init the systick properly will not break, but rather simply never time out &lt; Timeout definition to prevent lockup upon faulty transmission/errors </p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
 <a id="afd1602f0a37ccc427f89dfa44faef7bc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afd1602f0a37ccc427f89dfa44faef7bc">&#9670;&nbsp;</a></span>i2c_control()</h2>
 
@@ -514,14 +536,14 @@ The rest of the communication is managed by the callback.
  
 </div>
 </div>
-<a id="ab012febda800d5666017376a54b72758"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab012febda800d5666017376a54b72758">&#9670;&nbsp;</a></span>i2c_register_read()</h2>
+<a id="ae4a6bf3e99f72a423a4db808da712203"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4a6bf3e99f72a423a4db808da712203">&#9670;&nbsp;</a></span>i2c_register_read()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t i2c_register_read </td>
+          <td class="memname">uint16_t i2c_register_read </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>i2c_register</em></td><td>)</td>
@@ -542,7 +564,57 @@ Intended to be used alongside i2c_register_write() to create composite advanced 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>uint16_t timer_register's contents</dd></dl>
-<p><b>Example:</b> </p><div class="fragment"><div class="line">uint32_t cr1_i2c3 = <a class="code" href="i2c__interface_8h.html#ab012febda800d5666017376a54b72758">i2c_register_read</a>(I2C3_BASE + 0x00UL); <span class="comment">//get current value</span></div><div class="line">cr1_i2c3 &amp;= ~(0x01UL &lt;&lt; I2C_CR1_ACK_Pos); <span class="comment">//clear the DMA request on CC3 bit</span></div><div class="line">timer_register_write(I2C3_BASE + 0x00UL, cr1_i2c3);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411_8c.html#a3dbd39a96f4139c47af56876cde582a3">i2c_register_write</a> <br />
+<p><b>Example:</b> </p><div class="fragment"><div class="line">uint32_t cr1_i2c3 = <a class="code" href="i2c__interface_8h.html#ae4a6bf3e99f72a423a4db808da712203">i2c_register_read</a>(I2C3_BASE + 0x00UL); <span class="comment">//get current value</span></div><div class="line">cr1_i2c3 &amp;= ~(0x01UL &lt;&lt; I2C_CR1_ACK_Pos); <span class="comment">//clear the DMA request on CC3 bit</span></div><div class="line">timer_register_write(I2C3_BASE + 0x00UL, cr1_i2c3);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411_8c.html#a3dbd39a96f4139c47af56876cde582a3">i2c_register_write</a> <br />
+<b> - CHANGE HISTORY - </b></dd></dl>
+<table align="left" style="width:800px">
+<tr>
+<td>Date </td><td>Software Version </td><td>Initials </td><td>Description  </td></tr>
+</table>
+<p><br />
+<br />
+ </p><hr/>
+ 
+</div>
+</div>
+<a id="a3dbd39a96f4139c47af56876cde582a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3dbd39a96f4139c47af56876cde582a3">&#9670;&nbsp;</a></span>i2c_register_write()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void i2c_register_write </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>i2c_register</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><b>Description:</b> </p><pre class="fragment">Write the value into the register in i2c address space. It is the
+user's own responisibility to consult the RM0383 to ensure that no reserved bits are
+overwritten, etc.
+Intended to be used alongside i2c_register_read() to create composite advanced user functions
+</pre><p>PRE-CONDITION: The address does in fact lie in the address space of any timer.</p>
+<p>POST-CONDITION: The register now contains the value</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c_register</td><td>is a uint32_t which is cast as a 16bit address</td></tr>
+    <tr><td class="paramname">value</td><td>is a 16 bit value</td></tr>
+  </table>
+  </dd>
+</dl>
+<p><b>Example:</b> </p><div class="fragment"><div class="line">uint32_t cr1_i2c3 = <a class="code" href="i2c__interface_8h.html#ae4a6bf3e99f72a423a4db808da712203">i2c_register_read</a>(I2C3_BASE + 0x00UL); <span class="comment">//get current value</span></div><div class="line">cr1_i2c3 &amp;= ~(0x01UL &lt;&lt; I2C_CR1_ACK_Pos); <span class="comment">//clear the DMA request on CC3 bit</span></div><div class="line">timer_register_write(I2C3_BASE + 0x00UL, cr1_i2c3);</div></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="i2c__stm32f411_8c.html#a6d846c419f17676bc4e048d95b856b39">i2c_register_read</a> <br />
 <b> - CHANGE HISTORY - </b></dd></dl>
 <table align="left" style="width:800px">
 <tr>

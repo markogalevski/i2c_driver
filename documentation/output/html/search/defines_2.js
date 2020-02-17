@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['num_5fgpio_5fports',['NUM_GPIO_PORTS',['../gpio__stm32f411_8c.html#aeb4a9e2654893b7387d045ad31b49b54',1,'gpio_stm32f411.c']]]
+  ['timeout_5fms',['TIMEOUT_MS',['../i2c__interface_8h.html#a53bb6ce0dbc843daa4ad914d78713ac2',1,'i2c_interface.h']]]
 ];

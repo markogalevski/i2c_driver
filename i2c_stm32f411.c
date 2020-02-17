@@ -488,15 +488,19 @@ void i2c_master_transmit(i2c_transfer_t *i2c_transfer)
 	//3. Write Slave Address into DR
 	*I2C_DR[i2c_transfer->channel] = i2c_transfer->slave_address;
 	i2c_clear_addr_bit(i2c_transfer->channel);
-
+	uint32_t start_time = 0;
+	uint32_t current_time = 0;
 	//loop
 	while(i2c_transfer->data_length > 0)
 	{
+
 		//6. Wait for TxE
+		start_time = systick_get_tick();
 	    do
 		{
 		  status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_TXE_Msk;
-		}while (status_reg == 0);
+		  current_time = systick_get_tick();
+		}while (status_reg == 0 && (current_time - start_time < TIMEOUT_MS));
 	    //6. Write data byte into DR
 		*I2C_DR[i2c_transfer->channel] = *(i2c_transfer->buffer);
 		i2c_transfer->buffer++;
@@ -578,10 +582,14 @@ void i2c_master_receive(i2c_transfer_t *i2c_transfer)
 	/*
 	 * this is where the transfer methods branch.
 	 */
+	uint32_t start_time = 0;
+	uint32_t current_time = 0;
+	start_time = systick_get_tick();
 	do
 	{
 		status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_ADDR_Msk;
-	} while (status_reg == 0);
+		current_time = systick_get_tick();
+	} while (status_reg == 0 && (current_time - start_time < TIMEOUT_MS));
 
 	if (i2c_transfer->data_length == 0UL)
 	{
@@ -652,12 +660,16 @@ void i2c_slave_transmit(i2c_transfer_t *i2c_transfer)
 	  status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_ADDR_Msk;
   } while(status_reg == 0);
   i2c_clear_addr_bit(i2c_transfer->channel);
+  uint32_t start_time = 0;
+  uint32_t current_time = 0;
   while (i2c_transfer->data_length > 0UL)
   {
+	  start_time = systick_get_tick();
 	  do
 	  {
 	  status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_TXE_Msk;
-	  }while (status_reg ==  0);
+	  current_time = systick_get_tick();
+	  }while (status_reg ==  0 && (current_time - start_time < TIMEOUT_MS));
 
 	  *I2C_DR[i2c_transfer->channel] = *i2c_transfer->buffer;
 	  i2c_transfer->buffer++;
@@ -722,18 +734,25 @@ void i2c_slave_receive(i2c_transfer_t *i2c_transfer)
 	assert(i2c_transfer->buffer != 0);
 	*I2C_CR1[i2c_transfer->channel] |= I2C_CR1_ACK_Msk;
 	*I2C_CR1[i2c_transfer->channel] &= ~I2C_CR1_POS_Msk;
+	uint32_t start_time = 0;
+	uint32_t current_time = 0;
+
+	start_time = systick_get_tick();
 	do
 	{
 	  status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_ADDR_Msk;
-	} while(status_reg == 0);
+	  current_time = systick_get_tick();
+	} while(status_reg == 0 && (current_time - start_time < TIMEOUT_MS));
 	i2c_clear_addr_bit(i2c_transfer->channel);
 
 	while(i2c_transfer->data_length > 0)
 	{
+		start_time = systick_get_tick();
 		do
 		{
 			status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_RXNE_Msk;
-		} while(status_reg == 0);
+			current_time = systick_get_tick();
+		} while(status_reg == 0 && (current_time - start_time < TIMEOUT_MS));
 
 		*i2c_transfer->buffer = (uint8_t) *I2C_DR[i2c_transfer->channel];
 		i2c_transfer->buffer++;
@@ -746,10 +765,13 @@ void i2c_slave_receive(i2c_transfer_t *i2c_transfer)
 	    	i2c_transfer->data_length--;
 	    }
 	}
-
+	start_time = systick_get_tick();
 	do
+	{
 		status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_STOPF_Msk;
-	while (status_reg == 0);
+		current_time = systick_get_tick()
+	}
+	while (status_reg == 0 && (current_time - start_time < TIMEOUT_MS));
 	i2c_handle_stopf_flag(i2c_transfer->channel);
 	*I2C_CR1[i2c_transfer->channel] &= ~I2C_CR1_ACK_Msk;
 }
@@ -808,7 +830,9 @@ static void i2c_master_transmit_it_callback(i2c_transfer_t *i2c_transfer)
 {
 	uint32_t status_reg = *I2C_SR1[i2c_transfer->channel];
 	if (status_reg & I2C_SR1_ADDR_Msk)
+	{
 		i2c_clear_addr_bit(i2c_transfer->channel);
+	}
 	else if ((status_reg & I2C_SR1_TXE_Msk) && i2c_transfer->data_length > 0)
 	{
 		*I2C_DR[i2c_transfer->channel] = *i2c_transfer->buffer;
@@ -884,6 +908,8 @@ static void i2c_master_transmit_it_callback(i2c_transfer_t *i2c_transfer)
 static void i2c_master_receive_it_callback(i2c_transfer_t *i2c_transfer)
 {
 	uint32_t status_reg = *I2C_SR1[i2c_transfer->channel];
+	uint32_t start_time = 0;
+	uint32_t current_time = 0;
 	if (status_reg & I2C_SR1_ADDR_Msk)
 	{
 		i2c_clear_addr_bit(i2c_transfer->channel);
@@ -903,20 +929,25 @@ static void i2c_master_receive_it_callback(i2c_transfer_t *i2c_transfer)
 	else if (i2c_transfer->data_length == 3)
 	{
 		*I2C_CR2[i2c_transfer->channel] &= ~(I2C_CR2_ITBUFEN_Msk | I2C_CR2_ITEVTEN_Msk);
+		start_time = systick_get_tick();
 		do
 		{
 			status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_BTF_Msk;
-		} while(status_reg == 0);
+			current_time = systick_tick_get();
+		} while(status_reg == 0 && (current_time - start_time < TIMEOUT_MS));
 
 		*I2C_CR1[i2c_transfer->channel] &= ~I2C_CR1_ACK_Msk;
 		*i2c_transfer->buffer = *I2C_DR[i2c_transfer->channel];
 		i2c_transfer->buffer++;
 		i2c_transfer->data_length--;
 
+		start_time = systick_tick_get();
 		do
 		{
 		 status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_BTF_Msk;
-		} while(status_reg ==  0);
+		 current_time = systick_tick_get();
+		} while(status_reg ==  0 && (current_time - start_time < TIMEOUT_MS));
+
 		*I2C_CR1[i2c_transfer->channel] |= I2C_CR1_STOP_Msk;
 		*i2c_transfer->buffer = *I2C_DR[i2c_transfer->channel];
 		i2c_transfer->buffer++;
@@ -1447,10 +1478,14 @@ static void i2c_one_byte_reception(i2c_transfer_t *i2c_transfer)
 	*I2C_CR1[i2c_transfer->channel] &= ~I2C_CR1_ACK_Msk;
 	i2c_clear_addr_bit(i2c_transfer->channel);
 	*I2C_CR1[i2c_transfer->channel] |= I2C_CR1_STOP_Msk;
+	uint32_t start_time = 0;
+	uint32_t current_time = 0;
+	start_time = systick_tick_get();
 	do
 	{
 	  status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_RXNE_Msk;
-	} while(status_reg == 0);
+	  current_time = systick_tick_get();
+	} while(status_reg == 0 && (current_time - start_time < TIMEOUT_MS));
 	*i2c_transfer->buffer = (uint8_t) *I2C_DR[i2c_transfer->channel];
 	i2c_transfer->buffer++;
 	i2c_transfer->data_length--;
@@ -1493,10 +1528,16 @@ static void i2c_two_byte_reception(i2c_transfer_t *i2c_transfer)
 	*I2C_CR1[i2c_transfer->channel] &= ~I2C_CR1_ACK_Msk;
 	*I2C_CR1[i2c_transfer->channel] |= I2C_CR1_POS_Msk;
 	i2c_clear_addr_bit(i2c_transfer->channel);
+	uint32_t start_time = 0;
+	uint32_t current_time = 0;
+
+	start_time = systick_get_tick();
 	do
 	{
 		status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_BTF_Msk;
-	} while (status_reg == 0);
+		current_time = systick_get_tick();
+	} while (status_reg == 0 && (current_time - start_time < TIMEOUT_MS));
+
 	*I2C_CR1[i2c_transfer->channel] |= I2C_CR1_STOP_Msk;
 	*i2c_transfer->buffer = (uint8_t) *I2C_DR[i2c_transfer->channel];
 	i2c_transfer->buffer++;
@@ -1539,12 +1580,17 @@ static void i2c_two_byte_reception(i2c_transfer_t *i2c_transfer)
 static void i2c_n_byte_reception(i2c_transfer_t *i2c_transfer)
 {
   uint32_t status_reg;
+  uint32_t start_time = 0;
+  uint32_t current_time = 0;
   while (i2c_transfer->data_length > 3)
   	{
+	  start_time = systick_get_tick();
   	  do
   	  {
   	    status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_RXNE_Msk;
-  	  } while(status_reg ==  0);
+  	    current_time = systick_get_tick();
+  	  } while(status_reg == 0 && (current_time - start_time < TIMEOUT_MS));
+
 	  *i2c_transfer->buffer = *I2C_DR[i2c_transfer->channel];
   	  i2c_transfer->buffer++;
   	  i2c_transfer->data_length--;
@@ -1556,21 +1602,25 @@ static void i2c_n_byte_reception(i2c_transfer_t *i2c_transfer)
   	  	  i2c_transfer->data_length--;
   	  }
   	}
-
+  	start_time = systick_get_tick();
   	do
   	{
   	  status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_BTF_Msk;
-  	}while(status_reg == 0);
+  	  current_time = systick_get_tick();
+  	}while(status_reg == 0 && (current_time - start_time < TIMEOUT_MS));
 
   	*I2C_CR1[i2c_transfer->channel] &= ~I2C_CR1_ACK_Msk;
   	*i2c_transfer->buffer = *I2C_DR[i2c_transfer->channel];
   	i2c_transfer->buffer++;
   	i2c_transfer->data_length--;
 
+  	start_time = systick_get_tick();
  	do
   	{
   	 status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_BTF_Msk;
-  	} while(status_reg ==  0);
+  	 current_time = systick_get_tick();
+  	} while(status_reg ==  0 && (current_time - start_time < TIMEOUT_MS));
+
   	*I2C_CR1[i2c_transfer->channel] |= I2C_CR1_STOP_Msk;
   	*i2c_transfer->buffer = *I2C_DR[i2c_transfer->channel];
   	i2c_transfer->buffer++;
