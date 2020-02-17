@@ -769,7 +769,7 @@ void i2c_slave_receive(i2c_transfer_t *i2c_transfer)
 	do
 	{
 		status_reg = *I2C_SR1[i2c_transfer->channel] & I2C_SR1_STOPF_Msk;
-		current_time = systick_get_tick()
+		current_time = systick_get_tick();
 	}
 	while (status_reg == 0 && (current_time - start_time < TIMEOUT_MS));
 	i2c_handle_stopf_flag(i2c_transfer->channel);
